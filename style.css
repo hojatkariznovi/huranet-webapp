@@ -671,3 +671,100 @@ button:focus-visible {
     transition: none !important;
   }
 }
+
+
+/* مرتب‌سازی کارت‌های خدمات */
+.service-grid {
+  align-items: stretch;
+  gap: 12px;
+}
+
+.service-card {
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  padding: 15px 13px 14px;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.service-icon {
+  flex-shrink: 0;
+  margin-bottom: 10px;
+}
+
+.service-card h3 {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.service-card p {
+  min-height: 54px;
+  margin: 4px 0 14px;
+  line-height: 1.9;
+}
+
+.service-card .service-action {
+  flex-shrink: 0;
+  width: 100%;
+  min-height: 42px;
+  margin-top: auto;
+  padding: 9px 6px;
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+@media (min-width: 620px) {
+  .service-card {
+    padding: 16px 14px 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .service-grid {
+    gap: 8px;
+  }
+
+  .service-card {
+    padding: 12px 10px;
+  }
+
+  .service-card .service-action {
+    font-size: 10px;
+    gap: 5px;
+  }
+}
+
+
+/* فلش طلایی دسته‌بندی خدمات */
+.category-item {
+  min-width: 0;
+  transition: border-color .18s ease, background .18s ease;
+}
+
+.category-copy {
+  min-width: 0;
+}
+
+.category-arrow {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(232, 201, 138, .45);
+  border-radius: 11px;
+  background: var(--gold);
+  color: #1b170d;
+  font-size: 20px;
+  line-height: 1;
+  box-shadow: 0 3px 0 #b89a60;
+}
+
+.category-item:active .category-arrow {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #b89a60;
+}
