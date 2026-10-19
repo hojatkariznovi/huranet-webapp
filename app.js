@@ -209,80 +209,109 @@ function initEitaa() {
 }
 
 /* اجرای اولیه */
-document.addEventListener("DOMContentLoaded", () => {
-  renderPopular();
-  renderCategories();
-  initEitaa();
-});
-(() => {
+document.addEventListener("DOMContentLoaded", (() => {
+  // دکمه‌های تغییر تم
   const themeButton = document.getElementById("themeToggle");
   const themeIcon = document.getElementById("themeIcon");
   const themeLabel = document.getElementById("themeLabel");
 
+  // عناصر موسیقی؛ مستقل از تغییر تم
   const music = document.getElementById("huraMusic");
   const musicButton = document.getElementById("musicToggle");
   const musicIcon = document.getElementById("musicIcon");
   const musicLabel = document.getElementById("musicLabel");
 
-  if (!themeButton || !musicButton || !music) return;
+  // ---------- Theme ----------
+  function applyTheme(theme) {
+    const normalizedTheme = theme === "light" ? "light" : "dark";
 
-  // Theme
+    document.body.dataset.theme = normalizedTheme;
+    document.documentElement.dataset.theme = normalizedTheme;
+
+    if (themeIcon) {
+      themeIcon.textContent =
+        normalizedTheme === "light" ? "🌙" : "☀️";
+    }
+
+    if (themeLabel) {
+      themeLabel.textContent =
+        normalizedTheme === "light" ? "حالت شب" : "حالت روشن";
+    }
+
+    if (themeButton) {
+      themeButton.setAttribute(
+        "aria-pressed",
+        String(normalizedTheme === "light")
+      );
+    }
+
+    try {
+      localStorage.setItem("hura-theme", normalizedTheme);
+    } catch (_) {}
+  }
+
   let savedTheme = "dark";
 
   try {
     savedTheme = localStorage.getItem("hura-theme") || "dark";
   } catch (_) {}
 
-  function applyTheme(theme) {
-    document.body.dataset.theme = theme;
-
-    const light = theme === "light";
-    themeIcon.textContent = light ? "🌙" : "☀️";
-    themeLabel.textContent = light ? "حالت شب" : "حالت روشن";
-
-    try {
-      localStorage.setItem("hura-theme", theme);
-    } catch (_) {}
-  }
-
   applyTheme(savedTheme);
 
-  themeButton.addEventListener("click", () => {
-    const nextTheme =
-      document.body.dataset.theme === "light" ? "dark" : "light";
+  if (themeButton) {
+    themeButton.addEventListener("click", (event) => {
+      event.preventDefault();
 
-    applyTheme(nextTheme);
-  });
+      const currentTheme =
+        document.body.dataset.theme ||
+        document.documentElement.dataset.theme;
 
-  // Music
-  function updateMusicButton() {
-    const playing = !music.paused;
-
-    musicIcon.textContent = playing ? "❚❚" : "▶";
-    musicLabel.textContent = playing
-      ? "قطع موسیقی"
-      : "پخش موسیقی";
-
-    musicButton.setAttribute("aria-pressed", String(playing));
+      applyTheme(currentTheme === "light" ? "dark" : "light");
+    });
   }
 
-  musicButton.addEventListener("click", async () => {
-    if (music.paused) {
-      try {
-        await music.play();
-      } catch (error) {
-        musicLabel.textContent = "پخش ناموفق؛ دوباره بزن";
+  // ---------- Music ----------
+  if (music && musicButton) {
+    function updateMusicButton() {
+      const playing = !music.paused;
+
+      if (musicIcon) {
+        musicIcon.textContent = playing ? "❚❚" : "▶";
       }
-    } else {
-      music.pause();
+
+      if (musicLabel) {
+        musicLabel.textContent = playing
+          ? "قطع موسیقی"
+          : "پخش موسیقی";
+      }
+
+      musicButton.setAttribute("aria-pressed", String(playing));
     }
 
+    musicButton.addEventListener("click", async (event) => {
+      event.preventDefault();
+
+      if (music.paused) {
+        try {
+          await music.play();
+        } catch (_) {
+          if (musicLabel) {
+            musicLabel.textContent = "پخش ناموفق؛ دوباره بزن";
+          }
+          return;
+        }
+      } else {
+        music.pause();
+      }
+
+      updateMusicButton();
+    });
+
+    music.addEventListener("play", updateMusicButton);
+    music.addEventListener("pause", updateMusicButton);
+    music.addEventListener("ended", updateMusicButton);
+
     updateMusicButton();
-  });
-
-  music.addEventListener("play", updateMusicButton);
-  music.addEventListener("pause", updateMusicButton);
-  music.addEventListener("ended", updateMusicButton);
-
-  updateMusicButton();
+  }
 })();
+  
