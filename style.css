@@ -1068,3 +1068,161 @@ body[data-theme="light"] .hura-tools button {
     transition: none;
   }
 }
+
+
+/* HURA — Light Theme Fix */
+:root {
+  color-scheme: dark;
+}
+
+html[data-theme="light"],
+body[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f4f7fb;
+  --surface: #ffffff;
+  --surface-2: #eaf0f7;
+  --line: rgba(35, 58, 85, 0.14);
+  --text: #17283b;
+  --muted: #607086;
+  --accent: #087f73;
+  --accent-light: #12a696;
+  --accent-dark: #08665e;
+  --accent-ink: #ffffff;
+  --accent-2: #5574d9;
+  --gold: #e8c98a;
+}
+
+body[data-theme="light"] {
+  background: #f4f7fb;
+  color: var(--text);
+}
+
+body[data-theme="light"] .topbar {
+  border-color: var(--line);
+}
+
+body[data-theme="light"] .top-contact {
+  color: #263d55;
+  background: #ffffff;
+  border-color: var(--line);
+}
+
+body[data-theme="light"] .hero {
+  background: linear-gradient(140deg, #ffffff, #e8f1f8);
+  border-color: #d5e1ed;
+  box-shadow: 0 12px 35px rgba(35, 58, 85, 0.07);
+}
+
+body[data-theme="light"] .hero p {
+  color: #52657b;
+}
+
+body[data-theme="light"] .eyebrow {
+  color: #087f73;
+  background: #e4f7f3;
+  border-color: #c1e9e1;
+}
+
+body[data-theme="light"] .hero-foot {
+  color: #607086;
+}
+
+body[data-theme="light"] .service-card {
+  background: linear-gradient(145deg, #ffffff, #f1f6fb);
+  border-color: #d9e3ee;
+  box-shadow: 0 5px 18px rgba(35, 58, 85, 0.045);
+}
+
+body[data-theme="light"] .service-card h3 {
+  color: #17283b;
+}
+
+body[data-theme="light"] .service-card p {
+  color: #607086;
+}
+
+body[data-theme="light"] .category-item {
+  background: #ffffff;
+  color: #17283b;
+  border-color: #d9e3ee;
+}
+
+body[data-theme="light"] .category-icon {
+  background: #edf1ff;
+  color: #4966bd;
+}
+
+body[data-theme="light"] .category-copy small {
+  color: #607086;
+}
+
+body[data-theme="light"] .help-banner {
+  background: linear-gradient(120deg, #fff8e9, #ffffff);
+  border-color: #eadbb9;
+}
+
+body[data-theme="light"] .help-copy h3 {
+  color: #17283b;
+}
+
+body[data-theme="light"] .help-copy p {
+  color: #607086;
+}
+
+body[data-theme="light"] .trust-row > div {
+  background: #ffffff;
+  border-color: #d9e3ee;
+}
+
+body[data-theme="light"] .trust-row strong {
+  color: #17283b;
+}
+
+body[data-theme="light"] .trust-row small,
+body[data-theme="light"] .footer p {
+  color: #607086;
+}
+
+body[data-theme="light"] .footer {
+  border-color: #d9e3ee;
+}
+
+body[data-theme="light"] .footer-links {
+  color: #52657b;
+}
+
+body[data-theme="light"] .hura-tools button {
+  background: #ffffff;
+  color: #17283b;
+  border-color: #cbd8e5;
+}
+
+body[data-theme="light"] .toast {
+  background: #173c37;
+  color: #ffffff;
+}
+
+body[data-theme="light"] a:focus-visible,
+body[data-theme="light"] button:focus-visible {
+  outline-color: #087f73;
+}
+
+body[data-theme="light"] .service-card .service-action {
+  background: #087f73;
+  border-color: #087f73;
+  color: #ffffff;
+  box-shadow: 0 4px 0 #08665e;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body[data-theme="light"] .category-item:hover {
+    background: #f1f6fb;
+    border-color: #b7cbdc;
+  }
+
+  body[data-theme="light"] .top-contact:hover {
+    background: #eaf8f5;
+    border-color: #87cfc3;
+  }
+}
