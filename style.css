@@ -1015,3 +1015,56 @@ button:focus-visible {
   transform: translateY(2px);
   box-shadow: 0 1px 0 #b89a60;
 }
+/* Hura controls */
+.hura-tools {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px auto;
+  padding: 0 12px;
+}
+
+.hura-tools button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid rgba(100, 210, 210, 0.35);
+  border-radius: 14px;
+  background: #10283d;
+  color: #f5fbff;
+  font: inherit;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease;
+}
+
+.hura-tools button:active {
+  transform: scale(.97);
+}
+
+.hura-tools button:focus-visible {
+  outline: 2px solid #48d6c7;
+  outline-offset: 3px;
+}
+
+/* Light mode overrides */
+body[data-theme="light"] {
+  background-color: #f4f7fb;
+  color: #17283b;
+}
+
+body[data-theme="light"] .hura-tools button {
+  background: #ffffff;
+  color: #17283b;
+  border-color: #cbd8e5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hura-tools button {
+    transition: none;
+  }
+}
