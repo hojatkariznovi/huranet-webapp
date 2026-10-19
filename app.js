@@ -214,3 +214,75 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCategories();
   initEitaa();
 });
+(() => {
+  const themeButton = document.getElementById("themeToggle");
+  const themeIcon = document.getElementById("themeIcon");
+  const themeLabel = document.getElementById("themeLabel");
+
+  const music = document.getElementById("huraMusic");
+  const musicButton = document.getElementById("musicToggle");
+  const musicIcon = document.getElementById("musicIcon");
+  const musicLabel = document.getElementById("musicLabel");
+
+  if (!themeButton || !musicButton || !music) return;
+
+  // Theme
+  let savedTheme = "dark";
+
+  try {
+    savedTheme = localStorage.getItem("hura-theme") || "dark";
+  } catch (_) {}
+
+  function applyTheme(theme) {
+    document.body.dataset.theme = theme;
+
+    const light = theme === "light";
+    themeIcon.textContent = light ? "🌙" : "☀️";
+    themeLabel.textContent = light ? "حالت شب" : "حالت روشن";
+
+    try {
+      localStorage.setItem("hura-theme", theme);
+    } catch (_) {}
+  }
+
+  applyTheme(savedTheme);
+
+  themeButton.addEventListener("click", () => {
+    const nextTheme =
+      document.body.dataset.theme === "light" ? "dark" : "light";
+
+    applyTheme(nextTheme);
+  });
+
+  // Music
+  function updateMusicButton() {
+    const playing = !music.paused;
+
+    musicIcon.textContent = playing ? "❚❚" : "▶";
+    musicLabel.textContent = playing
+      ? "قطع موسیقی"
+      : "پخش موسیقی";
+
+    musicButton.setAttribute("aria-pressed", String(playing));
+  }
+
+  musicButton.addEventListener("click", async () => {
+    if (music.paused) {
+      try {
+        await music.play();
+      } catch (error) {
+        musicLabel.textContent = "پخش ناموفق؛ دوباره بزن";
+      }
+    } else {
+      music.pause();
+    }
+
+    updateMusicButton();
+  });
+
+  music.addEventListener("play", updateMusicButton);
+  music.addEventListener("pause", updateMusicButton);
+  music.addEventListener("ended", updateMusicButton);
+
+  updateMusicButton();
+})();
