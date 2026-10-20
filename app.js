@@ -30,78 +30,260 @@
     {id:'insurance-business',title:'بیمه مسئولیت و کسب‌وکار',category:'insurance',categoryName:'بیمه',icon:'store',tag:'کسب‌وکار',color:'#047857',bg:'#d1fae5',description:'ثبت درخواست بررسی بیمه‌های مسئولیت و پوشش‌های مرتبط با محل کسب‌وکار.',docs:['نوع فعالیت و نشانی محل','تعداد کارکنان یا مراجعه‌کنندگان در صورت ارتباط','شرح پوشش موردنیاز'],note:'نوع بیمه مناسب پس از بررسی فعالیت و ریسک‌های مربوط مشخص می‌شود.'},
     {id:'sim-lines',title:'فروش سیم‌کارت و خط رند',category:'shop',categoryName:'فروشگاه هورا',icon:'phone',tag:'فروش',color:'#4f46e5',bg:'#e0e7ff',description:'برای موجودی، اپراتور، شماره‌های رند و قیمت روز استعلام بگیرید.',docs:['اپراتور یا پیش‌شماره موردنظر','بودجه تقریبی و نوع خط','شرایط انتقال مالکیت را پیش از خرید بررسی کنید'],note:'موجودی و قیمت خطوط متغیر است؛ پیش از پرداخت از هورا استعلام بگیرید.'}
   ];
-  const SUPABASE_URL = 'https://niilwmvjvttxtngdgepa.supabase.co';
-  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_3Umb3Nca87j52DRQGgql2Q_GzPLRb0f';
-  const db = window.supabase && window.supabase.createClient
-    ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
-    : null;
+  let activeCategory = 'all';
+  const grid = $('#services-grid');
+  const searchInput = $('#service-search');
+  const status = $('#app-status');
+  let toastTimer;
 
-  function dbText(value, fallback='') { return value == null || value === '' ? fallback : String(value); }
-  function dbSpecs(value) {
-    if (Array.isArray(value)) return value.map(v => typeof v === 'string' ? v : JSON.stringify(v)).filter(Boolean);
-    if (value && typeof value === 'object') {
-      if (Array.isArray(value.items)) return value.items.map(v => String(v)).filter(Boolean);
-      return Object.entries(value).map(([k,v]) => `${k}: ${v}`).filter(Boolean);
+  function renderIcons(root=document){ $$('[data-icon]',root).forEach(el=>{const name=el.getAttribute('data-icon');el.innerHTML=icon(name);}); }
+  function safeText(value){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+  function serviceCard(s){
+    const docs=s.docs.map(d=>'<li>'+safeText(d)+'</li>').join('');
+    return '<article class="service-card" data-id="'+s.id+'" style="--icon-bg:'+s.bg+';--icon-color:'+s.color+';--card-glow:'+s.bg+'"><div class="service-card-inner"><div class="service-face service-front"><div class="service-card-top"><span class="service-icon">'+icon(s.icon)+'</span><span class="service-tag">'+safeText(s.tag)+'</span></div><h3>'+safeText(s.title)+'</h3><p>'+safeText(s.description)+'</p><div class="service-meta">'+icon('layers-3')+'<span>'+safeText(s.categoryName)+'</span></div><div class="service-card-actions"><button class="btn details-btn" type="button" data-action="flip" data-id="'+s.id+'">'+icon('file-text')+' مدارک لازم</button><button class="btn btn-primary" type="button" data-action="request" data-id="'+s.id+'">ثبت درخواست '+icon('arrow-left')+'</button></div></div><div class="service-face service-back"><h3>'+safeText(s.title)+'</h3><p class="back-subtitle">چک‌لیست اولیه پیش از ثبت درخواست</p><div class="docs-title">'+icon('clipboard-check')+' مدارک و اطلاعات موردنیاز</div><ul class="docs-list">'+docs+'</ul><div class="docs-disclaimer">'+safeText(s.note)+'</div><div class="service-card-actions"><button class="btn details-btn" type="button" data-action="flip" data-id="'+s.id+'">'+icon('arrow-left')+' بازگشت</button><button class="btn btn-primary" type="button" data-action="request" data-id="'+s.id+'">ثبت درخواست '+icon('arrow-left')+'</button></div></div></div></article>';
+  }
+  function updateServices(){
+    const query=(searchInput.value||'').trim().toLocaleLowerCase('fa');
+    const shown=services.filter(s=>s.category!=='shop'&&(activeCategory==='all'||s.category===activeCategory)&&(!query||(s.title+' '+s.description+' '+s.categoryName+' '+s.tag+' '+s.docs.join(' ')).toLocaleLowerCase('fa').includes(query)));
+    grid.innerHTML=shown.map(serviceCard).join('');
+    $('#visible-count').textContent=shown.length.toLocaleString('fa-IR');
+    $('#empty-state').hidden=shown.length!==0; grid.hidden=shown.length===0;
+    renderIcons(grid);
+  }
+  function setStatus(message,type){status.textContent=message;status.className='app-status'+(type?' '+type:'');}
+  function toggleTheme(){const dark=document.body.classList.toggle('dark');try{localStorage.setItem('hura-theme',dark?'dark':'light');}catch(e){}$('#theme-toggle').innerHTML=icon(dark?'sun':'moon');$('#theme-toggle').setAttribute('aria-label',dark?'فعال‌کردن پوسته روشن':'فعال‌کردن پوسته تیره');}
+  function initTheme(){let saved='';try{saved=localStorage.getItem('hura-theme')||'';}catch(e){}if(saved==='dark')document.body.classList.add('dark');$('#theme-toggle').innerHTML=icon(document.body.classList.contains('dark')?'sun':'moon');}
+  function initPromoSlider(){
+    const host=$('#promo-slider');
+    if(!host)return;
+    let current=0,timer=null;
+    const show=(index)=>{
+      const slides=$$('.promo-slide',host),dots=$$('.promo-dot',host);
+      if(!slides.length)return;
+      current=(index+slides.length)%slides.length;
+      slides.forEach((slide,i)=>slide.classList.toggle('active',i===current));
+      dots.forEach((dot,i)=>dot.classList.toggle('active',i===current));
+    };
+    const restart=()=>{if(timer)clearInterval(timer);timer=setInterval(()=>show(current+1),5000);};
+    host.addEventListener('click',e=>{
+      const prev=e.target.closest('#promo-prev'),next=e.target.closest('#promo-next'),dot=e.target.closest('.promo-dot');
+      if(prev){show(current-1);restart();}
+      else if(next){show(current+1);restart();}
+      else if(dot){show(Number(dot.dataset.slideTo)||0);restart();}
+    });
+    restart();
+  }
+  let currentView = 'home';
+  let previousView = 'home';
+  let selectedStoreCategory = 'all';
+  const viewIds = ['home','services','store','how','about'];
+  const categoryNames = {all:'همه خدمات',admin:'اداری و آنلاین',vehicle:'خودرو',business:'کسب‌وکار',digital:'دیجیتال و چاپ',insurance:'بیمه'};
+  function setActiveSection(id){
+    const serviceActive=id==='services'; const storeActive=id==='store';
+    $('#bottom-services').classList.toggle('active',serviceActive);
+    $('#bottom-store').classList.toggle('active',storeActive);
+    $$('.section-switch-btn').forEach(link=>link.classList.toggle('active',link.getAttribute('href')===(storeActive?'#store':'#services')));
+  }
+  function setView(id, options={}){
+    if(!viewIds.includes(id)) id='home';
+    currentView=id;
+    $$('[data-view]').forEach(panel=>{panel.hidden=panel.dataset.view!==id;});
+    $$('.nav-link[data-view-nav]').forEach(link=>link.classList.toggle('active',link.dataset.viewNav===id));
+    setActiveSection(id);
+    $('#promo-slider')?.classList.remove('slider-hidden');
+    $('#request-page').hidden=true; $('#purchase-page').hidden=true;
+    document.querySelector('.site-footer').hidden=false;
+    document.body.classList.remove('request-page-open');
+    if(options.hash!==false) history.replaceState({huraView:id},'', '#'+id);
+    if(options.scroll!==false) window.scrollTo({top:0,behavior:options.smooth?'smooth':'auto'});
+  }
+  function applyServiceCategory(category){
+    activeCategory=categoryNames[category] ? category : 'all';
+    $$('.filter-chip').forEach(b=>b.classList.toggle('active',b.dataset.category===activeCategory));
+    const title=$('#services-heading'); const subtitle=$('#services-subheading');
+    if(title) title.textContent=activeCategory==='all'?'چه کاری از دست هورا برمیاد؟':'خدمات '+categoryNames[activeCategory];
+    if(subtitle) subtitle.textContent=activeCategory==='all'?'خدمت موردنظرت را جست‌وجو کن یا از دسته‌بندی‌ها شروع کن.':'خدمات مرتبط با دسته «'+categoryNames[activeCategory]+'» را اینجا می‌بینی.';
+    updateServices();
+  }
+  function filterStore(category){
+    selectedStoreCategory=category||'all';
+    $$('.store-category-chip').forEach(b=>b.classList.toggle('active',b.dataset.storeCategory===selectedStoreCategory));
+    $$('#store .store-card').forEach(card=>{card.hidden=selectedStoreCategory!=='all'&&card.dataset.productCategory!==selectedStoreCategory;});
+  }
+  function showRequestPage(label){
+    previousView=currentView;
+    $('#request-page-service').textContent=label ? 'برای «'+label+'» از طریق پیام خصوصی با هورا در ارتباط باش.' : 'خدمت موردنظر را از طریق پیام خصوصی برای ما بفرست.';
+    $$('[data-view]').forEach(panel=>panel.hidden=true);
+    $('#promo-slider').classList.add('slider-hidden');
+    document.querySelector('.site-footer').hidden=true;
+    $('#purchase-page').hidden=true; $('#request-page').hidden=false;
+    document.body.classList.add('request-page-open');
+    window.scrollTo(0,0); history.replaceState({huraSubpage:'request'},'', '#send-request');
+  }
+  function showPurchasePage(product,price,specs){
+    previousView=currentView==='store'?'store':currentView;
+    $('#purchase-page-product').textContent='برای استعلام موجودی و خرید «'+product+'» از پیام‌رسان دلخواهت با هورا در ارتباط باش.';
+    const details=$('#purchase-page-details');
+    details.innerHTML='<strong>'+safeText(product)+'</strong><span>'+safeText(price||'قیمت نهایی نیازمند استعلام است')+'</span><p>'+safeText(specs||'مشخصات و موجودی هنگام استعلام تأیید می‌شود.')+'</p>';
+    details.hidden=false;
+    $$('[data-view]').forEach(panel=>panel.hidden=true);
+    $('#promo-slider').classList.add('slider-hidden');
+    document.querySelector('.site-footer').hidden=true; $('#request-page').hidden=true; $('#purchase-page').hidden=false;
+    document.body.classList.add('request-page-open'); window.scrollTo(0,0); history.replaceState({huraSubpage:'purchase'},'', '#purchase');
+  }
+  function restorePreviousView(){setView(previousView,{hash:true,scroll:true});}
+  function initSectionNavigation(){
+    document.addEventListener('click',e=>{
+      const categoryLink=e.target.closest('[data-service-category]');
+      if(categoryLink){e.preventDefault();const cat=categoryLink.dataset.serviceCategory;setView('services');applyServiceCategory(cat);return;}
+      const nav=e.target.closest('[data-view-nav]');
+      if(nav){e.preventDefault();setView(nav.dataset.viewNav);return;}
+      const link=e.target.closest('a[href^="#"]');
+      if(!link)return;
+      const id=link.getAttribute('href').slice(1);
+      if(viewIds.includes(id)){e.preventDefault();setView(id);return;}
+    });
+    $('#bottom-services').addEventListener('click',e=>{e.preventDefault();setView('services');});
+    $('#bottom-store').addEventListener('click',e=>{e.preventDefault();setView('store');});
+    $('#category-filters').addEventListener('click',e=>{const btn=e.target.closest('[data-category]');if(btn)applyServiceCategory(btn.dataset.category);});
+    $('#store-category-filters').addEventListener('click',e=>{const btn=e.target.closest('[data-store-category]');if(btn)filterStore(btn.dataset.storeCategory);});
+    setView('home',{hash:false,scroll:false}); filterStore('all');
+  }
+  const HURA_SUPABASE_URL = 'https://niilwmvjvttxtngdgepa.supabase.co';
+  const HURA_SUPABASE_KEY = 'sb_publishable_3Umb3Nca87j52DRQGgql2Q_GzPLRb0f';
+  let huraDb = null;
+  let remoteStoreProducts = false;
+  const palette = [
+    {color:'#2563eb',bg:'#dbeafe'}, {color:'#0e7490',bg:'#cffafe'},
+    {color:'#7c3aed',bg:'#ede9fe'}, {color:'#047857',bg:'#d1fae5'},
+    {color:'#b45309',bg:'#fef3c7'}, {color:'#be185d',bg:'#fce7f3'}
+  ];
+  function normalizedSlug(value){return String(value||'').trim().toLowerCase().replace(/\s+/g,'-');}
+  function categoryForSlug(slug){
+    const aliases={admin:'admin','اداری':'admin','اداری-و-آنلاین':'admin',vehicle:'vehicle','خودرو':'vehicle',business:'business','کسب-و-کار':'business',digital:'digital','دیجیتال-و-چاپ':'digital',insurance:'insurance','بیمه':'insurance',shop:'shop'};
+    return aliases[normalizedSlug(slug)] || normalizedSlug(slug) || 'all';
+  }
+  function faPrice(value){
+    if(value===null||value===undefined||value==='')return '';
+    const n=Number(value);
+    return Number.isFinite(n) ? n.toLocaleString('fa-IR')+' تومان' : String(value);
+  }
+  function specsText(value){
+    if(Array.isArray(value))return value.join('، ');
+    if(value&&typeof value==='object'){
+      if(Array.isArray(value.items))return value.items.join('، ');
+      return Object.entries(value).map(([k,v])=>k+': '+v).join('، ');
     }
-    return typeof value === 'string' ? value.split(',').map(v => v.trim()).filter(Boolean) : [];
+    return String(value||'');
   }
-  function dbPrice(product) {
-    if (product.price_label) return String(product.price_label);
-    if (product.price != null && product.price !== '') {
-      const amount = Number(product.price);
-      return Number.isFinite(amount) ? amount.toLocaleString('fa-IR') + ' تومان' : String(product.price);
-    }
-    return 'قیمت نیازمند استعلام است';
+  async function getRows(table){
+    const {data,error}=await huraDb.from(table).select('*').order('sort_order',{ascending:true});
+    if(error)throw error;
+    return data||[];
   }
-  function categorySlug(categoryRows, id, fallback='all') {
-    const found = categoryRows.find(c => String(c.id) === String(id));
-    return found && found.slug ? String(found.slug) : fallback;
+  function renderRemoteServiceCategories(list){
+    const host=$('#category-filters');
+    if(!host||!list.length)return;
+    const existing=host.querySelector('[data-category="all"]');
+    host.innerHTML='';
+    const all=document.createElement('button');all.type='button';all.className='filter-chip active';all.dataset.category='all';all.textContent='همه خدمات';host.appendChild(all);
+    list.filter(c=>c.is_active!==false).forEach(c=>{
+      const slug=categoryForSlug(c.slug||c.name);
+      if(slug==='shop')return;
+      const b=document.createElement('button');b.type='button';b.className='filter-chip';b.dataset.category=slug;b.textContent=c.name||slug;host.appendChild(b);
+    });
   }
-  function renderDynamicProducts(products, productCategories) {
-    const holder = $('.store-grid');
-    if (!holder || !products.length) return;
-    const iconFor = slug => /sim|line|phone/.test(slug) ? 'phone' : /modem|wifi/.test(slug) ? 'wifi' : /cash|wallet/.test(slug) ? 'wallet' : /pos|card/.test(slug) ? 'credit-card' : 'package';
-    const colorFor = slug => /used/.test(slug) ? 'product-purple' : /new/.test(slug) ? 'product-green' : /sim|modem/.test(slug) ? 'product-orange' : 'product-blue';
-    holder.innerHTML = products.map(product => {
-      const slug = categorySlug(productCategories, product.category_id, 'other');
-      const specs = dbSpecs(product.specifications);
-      const description = dbText(product.description, 'برای اطلاع از جزئیات و شرایط این محصول با هورا تماس بگیر.');
-      const price = dbPrice(product);
-      const specsHtml = specs.length ? specs.map(v => `<span>${safeText(v)}</span>`).join('') : '<span>جزئیات هنگام استعلام</span>';
-      const imageHtml = product.image_url ? `<div class="store-product-image"><img src="${safeText(product.image_url)}" alt="${safeText(product.name)}" loading="lazy" style="max-width:100%;max-height:130px;object-fit:contain"></div>` : `<div class="store-product-icon ${colorFor(slug)}"><span data-icon="${iconFor(slug)}"></span></div>`;
-      const badge = product.is_available === false ? 'نیازمند استعلام' : 'فروشگاه هورا';
-      const priceSmall = product.price_label ? '' : '<small>قیمت نهایی نیازمند تأیید</small>';
-      return `<article class="store-card" data-product-category="${safeText(slug)}">${imageHtml}<span class="store-badge">${badge}</span><h3>${safeText(product.name || 'محصول هورا')}</h3><p>${safeText(description)}</p><div class="store-specs">${specsHtml}</div><div class="store-price">${safeText(price)} ${priceSmall}</div><button class="btn btn-primary btn-full" type="button" data-product="${safeText(product.name || 'محصول هورا')}" data-price="${safeText(price)}" data-specs="${safeText(specs.join('، ') || description)}">استعلام و خرید <span data-icon="arrow-left"></span></button></article>`;
+  function renderRemoteServices(records,categoriesList){
+    if(!records.length)return false;
+    const categoryById=new Map(categoriesList.map(c=>[String(c.id),c]));
+    const mapped=records.filter(r=>r.is_active!==false).map((r,i)=>{
+      const cat=categoryById.get(String(r.category_id));
+      const slug=categoryForSlug(cat?.slug||cat?.name||'admin');
+      const p=palette[i%palette.length];
+      return {
+        id:String(r.id),title:r.name||r.title||'خدمت بدون نام',category:slug,categoryName:cat?.name||'خدمات هورا',
+        icon:r.icon||'sparkles',tag:r.tag||'خدمت هورا',color:r.color||p.color,bg:r.bg||p.bg,
+        description:r.description||'برای دریافت جزئیات این خدمت با هورا ارتباط بگیر.',
+        docs:Array.isArray(r.docs)?r.docs:['مدارک و اطلاعات موردنیاز را هنگام ثبت درخواست از هورا بپرسید.'],
+        note:r.note||'مدارک نهایی به نوع درخواست و شرایط مرجع مربوط بستگی دارد.'
+      };
+    });
+    if(!mapped.length)return false;
+    services=mapped;
+    renderRemoteServiceCategories(categoriesList);
+    updateServices();
+    return true;
+  }
+  function renderRemoteProductCategories(list){
+    const host=$('#store-category-filters');
+    if(!host||!list.length)return;
+    host.innerHTML='';
+    const all=document.createElement('button');all.type='button';all.className='store-category-chip active';all.dataset.storeCategory='all';all.textContent='همه محصولات';host.appendChild(all);
+    list.filter(c=>c.is_active!==false).forEach(c=>{
+      const b=document.createElement('button');b.type='button';b.className='store-category-chip';b.dataset.storeCategory=normalizedSlug(c.slug||c.name);b.textContent=c.name||c.slug||'دسته‌بندی';host.appendChild(b);
+    });
+  }
+  function renderRemoteProducts(records,categoriesList){
+    const host=$('#store .store-grid');
+    if(!host||!records.length)return false;
+    const categoryById=new Map(categoriesList.map(c=>[String(c.id),c]));
+    const active=records.filter(r=>r.is_active!==false);
+    if(!active.length)return false;
+    host.innerHTML=active.map((p,i)=>{
+      const cat=categoryById.get(String(p.category_id));
+      const slug=normalizedSlug(cat?.slug||cat?.name||'other');
+      const name=p.name||'محصول بدون نام';
+      const description=p.description||'';
+      const specs=specsText(p.specifications);
+      const price=p.price_label||faPrice(p.price)||'برای قیمت تماس بگیرید';
+      const badge=p.is_available===false?'ناموجود':'استعلام موجودی';
+      const iconName=/sim|line|سیم/i.test(slug+' '+name)?'phone':/modem|مودم|wifi/i.test(slug+' '+name)?'wifi':/pos|کارتخوان|cashless|کش.?لس/i.test(slug+' '+name)?'credit-card':'package';
+      const iconClass=['product-blue','product-purple','product-green','product-orange'][i%4];
+      const image=p.image_url?'<div class="store-product-image"><img src="'+safeText(p.image_url)+'" alt="'+safeText(name)+'" loading="lazy" onerror="this.parentElement.hidden=true"></div>':'';
+      return '<article class="store-card" data-product-category="'+safeText(slug)+'">'+image+'<div class="store-product-icon '+iconClass+'"><span data-icon="'+iconName+'"></span></div><span class="store-badge">'+safeText(badge)+'</span><h3>'+safeText(name)+'</h3><p>'+safeText(description)+'</p>'+(specs?'<div class="store-specs"><span>'+safeText(specs)+'</span></div>':'')+'<div class="store-price">'+safeText(price)+(p.price_label?'<small>قیمت/وضعیت ثبت‌شده در هورا</small>':'')+'</div><button class="btn btn-primary btn-full" type="button" data-product="'+safeText(name)+'" data-price="'+safeText(price)+'" data-specs="'+safeText(specs||description)+'">استعلام و خرید <span data-icon="arrow-left"></span></button></article>';
     }).join('');
-    renderIcons(holder);
-    updateStoreCategoryButtons(productCategories);
-    filterStore(selectedStoreCategory);
+    renderIcons(host);
+    remoteStoreProducts=true;
+    renderRemoteProductCategories(categoriesList);
+    filterStore('all');
+    return true;
   }
-  function updateStoreCategoryButtons(categories) {
-    const holder = $('#store-category-filters');
-    if (!holder || !categories.length) return;
-    const current = selectedStoreCategory;
-    holder.innerHTML = `<button type="button" class="store-category-chip ${current==='all'?'active':''}" data-store-category="all">همه محصولات</button>` + categories.map(c => `<button type="button" class="store-category-chip ${current===c.slug?'active':''}" data-store-category="${safeText(c.slug)}">${safeText(c.name)}</button>`).join('');
+  function renderRemoteBanners(records){
+    const active=records.filter(b=>b.is_active!==false && (b.title||b.description||b.image_url));
+    if(!active.length)return false;
+    const slidesHost=$('#promo-slides'),dotsHost=$('#promo-dots');
+    if(!slidesHost||!dotsHost)return false;
+    slidesHost.innerHTML=active.map((b,i)=>{
+      const href=b.button_url||'#services';
+      const buttonText=b.button_text||'مشاهده بیشتر';
+      const bg=b.image_url?' style="background-image:linear-gradient(90deg,rgba(7,18,38,.78),rgba(7,18,38,.2)),url(\''+safeText(b.image_url)+'\');background-size:cover;background-position:center"':'';
+      return '<article class="promo-slide '+(i===0?'active':'')+'" data-slide="'+i+'"'+bg+'><div class="promo-slide-icon"><span data-icon="sparkles"></span></div><div class="promo-slide-copy"><small>هورا</small><strong>'+safeText(b.title||'پیشنهاد هورا')+'</strong><span>'+safeText(b.description||'برای دریافت اطلاعات بیشتر وارد بخش مربوط شو.')+'</span></div><a class="promo-slide-link" href="'+safeText(href)+'"'+(/^https?:\/\//i.test(href)?' target="_blank" rel="noopener noreferrer"':'')+'>'+safeText(buttonText)+' <span data-icon="arrow-left"></span></a></article>';
+    }).join('');
+    dotsHost.innerHTML=active.map((b,i)=>'<button class="promo-dot '+(i===0?'active':'')+'" type="button" data-slide-to="'+i+'" aria-label="اسلاید '+(i+1)+'"></button>').join('');
+    renderIcons(slidesHost);
+    return true;
   }
-  function updateServiceCategoryButtons(categories) {
-    const holder = $('#category-filters');
-    if (!holder || !categories.length) return;
-    const current = activeCategory;
-    holder.innerHTML = `<button class="filter-chip ${current==='all'?'active':''}" type="button" data-category="all">همه خدمات</button>` + categories.map(c => `<button class="filter-chip ${current===c.slug?'active':''}" type="button" data-category="${safeText(c.slug)}">${safeText(c.name)}</button>`).join('');
+  async function loadHuraContent(){
+    if(!window.supabase?.createClient){setStatus('سایت آماده است؛ کتابخانه اتصال بارگذاری نشد.','error');return;}
+    huraDb=window.supabase.createClient(HURA_SUPABASE_URL,HURA_SUPABASE_KEY);
+    const results=await Promise.allSettled([
+      getRows('service_categories'),getRows('services'),getRows('product_categories'),getRows('products'),getRows('banners')
+    ]);
+    const failed=results.filter(r=>r.status==='rejected');
+    const val=i=>results[i].status==='fulfilled'?results[i].value:[];
+    const serviceCats=val(0),serviceRows=val(1),productCats=val(2),productRows=val(3),bannerRows=val(4);
+    const changed=[];
+    if(renderRemoteServices(serviceRows,serviceCats))changed.push('خدمات');
+    if(renderRemoteProducts(productRows,productCats))changed.push('محصولات');
+    if(renderRemoteBanners(bannerRows))changed.push('بنرها');
+    if(failed.length){
+      console.warn('Supabase read issue:',results.filter(r=>r.status==='rejected').map(r=>r.reason));
+      setStatus(changed.length?'بخش '+changed.join('، ')+' از پایگاه داده بارگذاری شد؛ دسترسی بعضی جدول‌ها بررسی شود.':'سایت با اطلاعات پیش‌فرض نمایش داده می‌شود؛ دسترسی خواندن Supabase را بررسی کنید.','error');
+    } else {
+      setStatus(changed.length?'اطلاعات '+changed.join('، ')+' از پنل مدیریت بارگذاری شد.':'اتصال برقرار است؛ برای نمایش اطلاعات جدید، موارد را در پنل مدیریت فعال کنید.','success');
+    }
   }
-  async function loadStorefrontData() {
-    if (!db) { console.warn('Supabase library is not loaded; using built-in storefront content.'); return; }
-    try {
-      const [catRes, serviceRes, productCatRes, productRes, bannerRes] = await Promise.all([
-        db.from('service_categories').select('id,name,slug,is_active,sort_order').eq('is_active', true).order('sort_order', {ascending:true}),
-        db.from('services').select('*').eq('is_active', true).order('sort_order', {ascending:true}),
-        db.from('product_categories').select('id,name,slug,is_active,sort_order').eq('is_active', true).order('sort_order', {ascending:true}),
-        db.from('products').select('*').eq('is_active', true).order('sort_order', {ascending:true}),
-        db.from('banners').select('*').eq('is_active', true).order('sort_order', {ascending:true})
-      ]);
-      if (catRes.error) throw catRes.error;
-      if (serviceRes.error) throw serviceRes.error;
-        }
+
   function init(){
     renderIcons(); initTheme(); initPromoSlider(); initSectionNavigation(); $('#current-year').textContent=new Date().getFullYear().toLocaleString('fa-IR'); updateServices();
     $('#theme-toggle').addEventListener('click',toggleTheme);
@@ -112,8 +294,8 @@
     $('#request-page-back').addEventListener('click',restorePreviousView);
     $('#purchase-page-back').addEventListener('click',()=>setView('store'));
     // Platform links are direct profile links; no form or fake submission is used.
-    setStatus('هورا آماده است','success');
-    loadStorefrontData();
+    setStatus('هورا آماده است؛ در حال دریافت اطلاعات سایت…','success');
+    loadHuraContent().catch(error=>{console.error('Hura Supabase sync failed:',error);setStatus('سایت با اطلاعات پیش‌فرض نمایش داده می‌شود؛ اتصال پایگاه داده بررسی شود.','error');});
   }
   try{if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();}
   catch(error){console.error('Hura initialization failed:',error);setStatus('خطا در اجرای اسکریپت؛ فایل app.js را بررسی کنید','error');}
