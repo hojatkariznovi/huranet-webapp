@@ -150,7 +150,7 @@
     $('#request-page-back').addEventListener('click',restorePreviousView);
     $('#purchase-page-back').addEventListener('click',()=>setView('store'));
     // Platform links are direct profile links; no form or fake submission is used.
-    setStatus('هورا در خدمت شماست ','success');
+    setStatus('هورا آماده است','success');
   }
   try{if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();}
   catch(error){console.error('Hura initialization failed:',error);setStatus('خطا در اجرای اسکریپت؛ فایل app.js را بررسی کنید','error');}
