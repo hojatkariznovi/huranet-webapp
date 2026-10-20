@@ -1,78 +1,107 @@
 <!doctype html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#091321">
+  <meta name="description" content="هورا؛ دسترسی ساده‌تر به خدمات اینترنتی و حضوری. خدمت موردنظر را پیدا کنید و درخواست خود را در ایتا ثبت کنید.">
+  <title>هورا | خدمات ساده‌تر، سریع‌تر</title>
+  <link rel="stylesheet" href="style.css?v=11">
+  <script src="app.js?v=11" defer></script>
+</head>
+<body>
+  <div class="announcement"><span class="status-dot"></span> هورا؛ راه ساده‌تر دسترسی به خدمات</div>
 
-<html lang="fa" dir="rtl">  
-<head>  
-  <meta charset="utf-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">  
-  <meta name="theme-color" content="#0b1220">  
-  <meta name="description" content="هورا؛ خدمات اینترنتی و اداری، ساده‌تر و سریع‌تر">  
-  <title>هورا | خدمات هوشمند</title>  
-<link rel="stylesheet" href="style.css?v=3">  
-<script src="https://developer.eitaa.com/eitaa-web-app.js"></script>  
-</head>  
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>  
-  <script src="app.js"></script>  
-  <div class="hura-tools" dir="rtl">  
-  <button id="themeToggle" type="button">  
-    <span id="themeIcon">☀️</span>  
-    <span id="themeLabel">حالت روشن</span>  
-  </button>    <button id="musicToggle" type="button">  
-    <span id="musicIcon">▶</span>  
-    <span id="musicLabel">پخش موسیقی</span>  
-  </button>  <audio id="huraMusic" src="music.mp3" loop preload="none"></audio>
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" aria-label="صفحه اصلی هورا">
+      <span class="brand-mark">هـ</span>
+      <span class="brand-copy"><strong>هورا</strong><small>خدمات حضوری و آنلاین</small></span>
+    </a>
+    <button class="icon-button menu-toggle" id="menuToggle" aria-label="باز کردن منو" aria-expanded="false" aria-controls="mainNav"><span></span><span></span><span></span></button>
+    <nav class="main-nav" id="mainNav" aria-label="منوی اصلی">
+      <a href="#services">خدمات</a>
+      <a href="#categories">دسته‌بندی‌ها</a>
+      <a href="#how-it-works">راهنمای ثبت درخواست</a>
+      <a href="#contact">ارتباط با هورا</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-button theme-toggle" id="themeToggle" aria-label="تغییر حالت روشن و تاریک" title="تغییر پوسته"><span id="themeGlyph" class="svg-icon" aria-hidden="true"></span></button>
+      <a class="button button-primary header-cta" href="https://eitaa.com/hojat_k82" target="_blank" rel="noopener">ثبت درخواست <span aria-hidden="true">↗</span></a>
+    </div>
+  </header>
 
-  </div>  
-<body>  
-  <div class="app-shell">  
-    <header class="topbar">  
-      <a class="brand" href="#" aria-label="صفحه اصلی هورا">  
-        <span class="brand-mark">H</span>  
-        <span class="brand-copy"><strong>هورا</strong><small>خدمات هوشمند</small></span>  
-      </a>  
-      <a class="top-contact" href="https://eitaa.com/hojat_k82" target="_blank" rel="noopener">ارتباط با هورا <span>↗</span></a>  
-    </header>  <main>  
-  <section class="hero">  
-    <div class="hero-glow glow-one"></div><div class="hero-glow glow-two"></div>  
-    <div class="eyebrow"><span class="pulse"></span> خدمات حضوری و غیرحضوری</div>  
-    <h1>کار اداری داری؟<br><span>هورا کنارته.</span></h1>  
-    <p>خدمات اینترنتی و اداری را ساده‌تر پیگیری کن؛ خدمتت را انتخاب کن و درخواستت را مستقیم برای هورا بفرست.</p>  
-    <a class="primary-btn" href="#popular">مشاهده خدمات <span>↓</span></a>  
-    <div class="hero-foot"><span class="mini-check">✓</span> ثبت درخواست آسان <i></i> پاسخ‌گویی انسانی</div>  
-  </section>  
+  <main>
+    <section class="hero section-wrap" aria-label="معرفی هورا">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> خدمات، نزدیک‌تر از همیشه</div>
+        <h1>خدمت موردنظرت را<br><span>ساده‌تر پیدا کن.</span></h1>
+        <p>در هورا خدمات پرکاربرد را بررسی کن، مدارک لازم را ببین و برای ثبت درخواست، مستقیم با ما در ایتا در ارتباط باش.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#services">مشاهده خدمات <span aria-hidden="true">↓</span></a>
+          <a class="button button-secondary" href="https://eitaa.com/hojat_k82" target="_blank" rel="noopener">گفت‌وگو در ایتا <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="hero-points"><span><i>✓</i> نمایش مدارک موردنیاز</span><span><i>✓</i> ثبت درخواست در ایتا</span><span><i>✓</i> قابل استفاده با گوشی</span></div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-glow"></div>
+        <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+        <div class="hero-logo-card"><div class="hero-logo-mark">هـ</div><span>HURA</span><small>YOUR SERVICE, SIMPLIFIED</small><div class="logo-card-foot"><span class="status-dot"></span> خدمات در دسترس شما</div></div>
+        <div class="float-chip chip-top"><span class="chip-icon">⌕</span><span><b>جست‌وجوی سریع</b><small>خدمتت را پیدا کن</small></span></div>
+        <div class="float-chip chip-bottom"><span class="chip-icon chip-check">✓</span><span><b>مدارک شفاف</b><small>قبل از درخواست بررسی کن</small></span></div>
+        <span class="decor-dot dot-a"></span><span class="decor-dot dot-b"></span><span class="decor-dot dot-c"></span>
+      </div>
+    </section>
 
-  <section class="section" id="popular">  
-    <div class="section-heading">  
-      <div><span class="section-kicker">شروع سریع</span><h2>خدمات پرتقاضا</h2></div>  
-      <span class="heading-orbit">01 / 03</span>  
-    </div>  
-    <div class="service-grid popular-grid" id="popular-services"></div>  
-  </section>  
+    <section class="slider section-wrap" aria-label="راهنمای هورا">
+      <div class="slider-track" id="sliderTrack">
+        <article class="slide slide-one is-active" aria-hidden="false"><div class="slide-symbol">⌕</div><div><span class="slide-kicker">راهنمای هورا · ۰۱</span><h2>اول مدارک را ببین، بعد درخواست بده</h2><p>کارت هر خدمت را برگردان تا فهرست مدارک پیشنهادی و نکات مهم را بخوانی.</p></div><a href="#services" class="slide-link">دیدن خدمات <span>←</span></a></article>
+        <article class="slide slide-two" aria-hidden="true"><div class="slide-symbol">↗</div><div><span class="slide-kicker">راهنمای هورا · ۰۲</span><h2>درخواستت را مستقیم در ایتا مطرح کن</h2><p>با انتخاب ثبت درخواست، متن آماده را می‌بینی؛ می‌توانی آن را کپی کنی و در گفت‌وگوی هورا بفرستی.</p></div><a href="https://eitaa.com/hojat_k82" target="_blank" rel="noopener" class="slide-link">ورود به ایتا <span>←</span></a></article>
+        <article class="slide slide-three" aria-hidden="true"><div class="slide-symbol">◐</div><div><span class="slide-kicker">راهنمای هورا · ۰۳</span><h2>ظاهر سایت را مطابق سلیقه‌ات تنظیم کن</h2><p>از دکمه بالای صفحه برای جابه‌جایی بین حالت تاریک و روشن استفاده کن.</p></div><button class="slide-link" type="button" id="sliderThemeBtn">تغییر پوسته <span>←</span></button></article>
+      </div>
+      <div class="slider-controls"><div class="slider-dots" id="sliderDots" aria-label="انتخاب اسلاید"><button class="slider-dot is-active" aria-label="اسلاید ۱" data-slide="0"></button><button class="slider-dot" aria-label="اسلاید ۲" data-slide="1"></button><button class="slider-dot" aria-label="اسلاید ۳" data-slide="2"></button></div><div class="slider-arrows"><button class="icon-button" id="slidePrev" aria-label="اسلاید قبلی">→</button><button class="icon-button" id="slideNext" aria-label="اسلاید بعدی">←</button></div></div>
+    </section>
 
-  <section class="section categories-section">  
-    <div class="section-heading">  
-      <div><span class="section-kicker">همه در یک‌جا</span><h2>دسته‌بندی خدمات</h2></div>  
-      <span class="heading-orbit">02 / 03</span>  
-    </div>  
-    <div class="category-list" id="categories"></div>  
-  </section>  
+    <section class="services-section section-wrap" id="services">
+      <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> فهرست خدمات</div><h2>خدمات هورا</h2><p>خدمت را جست‌وجو کن، مدارک را ببین و درخواستت را ثبت کن.</p></div><button class="favorites-filter" id="favoritesFilter" aria-pressed="false"><span>☆</span> علاقه‌مندی‌ها <b id="favoriteCount">۰</b></button></div>
+      <div class="service-toolbar">
+        <label class="search-box" for="serviceSearch"><span aria-hidden="true">⌕</span><input id="serviceSearch" type="search" placeholder="نام خدمت را جست‌وجو کن..." autocomplete="off"><button id="clearSearch" type="button" aria-label="پاک کردن جست‌وجو" hidden>×</button></label>
+        <label class="sort-control"><span>مرتب‌سازی</span><select id="serviceSort"><option value="default">پیشنهادی</option><option value="title">نام خدمت</option></select></label>
+      </div>
+      <div class="category-chips" id="categoryChips" aria-label="فیلتر دسته‌بندی خدمات"><button class="category-chip is-active" data-category="all">همه خدمات <span class="chip-count" id="allCount">۰</span></button></div>
+      <div class="results-line"><span id="resultsCount">در حال بارگذاری خدمات…</span><button id="resetFilters" class="text-button" type="button">پاک کردن فیلترها</button></div>
+      <div class="services-grid" id="servicesGrid" aria-live="polite"></div>
+      <div class="empty-state" id="emptyState" hidden><span class="empty-icon">⌕</span><h3>خدمتی پیدا نشد</h3><p>عبارت جست‌وجو یا دسته‌بندی را تغییر بده.</p><button class="button button-secondary" id="emptyReset" type="button">نمایش همه خدمات</button></div>
+      <p class="service-disclaimer">توجه: مدارک درج‌شده راهنمای اولیه‌اند و ممکن است با توجه به نوع خدمت و مقررات روز تغییر کنند. پیش از ارسال مدارک یا پرداخت وجه، جزئیات را با پشتیبانی هورا بررسی کن.</p>
+    </section>
 
-  <section class="help-banner">  
-    <div class="help-icon">✳</div>  
-    <div class="help-copy"><h3>خدمت موردنظرت را پیدا نکردی؟</h3><p>پیامت را برای هورا بفرست تا راهنمایی‌ات کنیم.</p></div>  
-    <a class="icon-button" href="https://eitaa.com/hojat_k82" target="_blank" rel="noopener" aria-label="پیام به هورا">↗</a>  
-  </section>  
+    <section class="categories-section section-wrap" id="categories">
+      <div class="section-heading"><div><div class="eyebrow"><span class="eyebrow-line"></span> شروع از یک دسته</div><h2>دسته‌بندی خدمات</h2><p>با انتخاب هر دسته، خدمات مرتبط را ببین.</p></div></div>
+      <div class="category-grid" id="categoryGrid"></div>
+    </section>
 
-  <section class="trust-row">  
-    <div><span class="trust-symbol">⌁</span><strong>ساده و قابل پیگیری</strong><small>از درخواست تا تحویل</small></div>  
-    <div><span class="trust-symbol">◈</span><strong>ارتباط مستقیم</strong><small>گفت‌وگو با هورا</small></div>  
-  </section>  
-</main>  
+    <section class="how-section section-wrap" id="how-it-works">
+      <div class="how-heading"><div class="eyebrow"><span class="eyebrow-line"></span> مسیر ساده</div><h2>ثبت درخواست چطور انجام می‌شود؟</h2><p>در این نسخه، درخواست‌ها از طریق گفت‌وگوی مستقیم در ایتا پیگیری می‌شوند.</p></div>
+      <div class="steps-grid"><article class="step-card"><span class="step-number">۰۱</span><div class="step-icon">⌕</div><h3>خدمت را انتخاب کن</h3><p>از جست‌وجو یا دسته‌بندی‌ها برای پیدا کردن خدمت موردنظر استفاده کن.</p></article><article class="step-card"><span class="step-number">۰۲</span><div class="step-icon">▤</div><h3>مدارک را بررسی کن</h3><p>روی «مدارک موردنیاز» بزن و پیش از ارسال درخواست، موارد لازم را بخوان.</p></article><article class="step-card"><span class="step-number">۰۳</span><div class="step-icon">↗</div><h3>در ایتا پیام بده</h3><p>متن آماده را کپی کن، وارد گفت‌وگوی هورا شو و پیام را ارسال کن.</p></article></div>
+    </section>
 
-<footer class="footer">  
-  <div class="footer-brand"><span class="brand-mark small">H</span><strong>هورا</strong></div>  
-  <p>الهام‌گرفته از نیاز شما، ساخته‌شده برای راحتی شما.</p>  
-  <div class="footer-links"><a href="https://eitaa.com/hojat_k82" target="_blank" rel="noopener">پیام به هورا</a><span>•</span><span>نسخه اولیه</span></div>  
-</footer>
+    <section class="contact-banner section-wrap" id="contact"><div class="contact-art"><span class="contact-ring ring-a"></span><span class="contact-ring ring-b"></span><div class="contact-mark">هـ</div></div><div class="contact-copy"><div class="eyebrow"><span class="eyebrow-line"></span> ارتباط مستقیم</div><h2>برای ثبت درخواست آماده‌ای؟</h2><p>برای بررسی شرایط خدمت و هماهنگی مراحل بعدی، از طریق ایتا با هورا در ارتباط باش.</p></div><a class="button button-primary contact-button" href="https://eitaa.com/hojat_k82" target="_blank" rel="noopener">گفت‌وگو در ایتا <span>↗</span></a></section>
+  </main>
 
-  </div>  </body>  
+  <footer class="site-footer"><a class="brand footer-brand" href="#top"><span class="brand-mark">هـ</span><span class="brand-copy"><strong>هورا</strong><small>خدمات حضوری و آنلاین</small></span></a><p>ساده‌تر پیدا کن؛ آگاهانه درخواست بده.</p><div class="footer-links"><a href="#services">خدمات</a><a href="#how-it-works">راهنما</a><a href="https://eitaa.com/hojat_k82" target="_blank" rel="noopener">ایتا</a><button id="footerThemeToggle" type="button">تغییر پوسته</button></div><small class="copyright">© هورا — نمایش اطلاعات خدمات بدون ثبت اطلاعات روی سرور</small></footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <button class="back-to-top" id="backToTop" type="button" aria-label="بازگشت به بالای صفحه">↑</button>
+  <dialog class="service-dialog request-dialog" id="requestDialog" aria-labelledby="requestDialogTitle">
+    <div class="dialog-header"><span class="dialog-eyebrow">ثبت درخواست</span><button class="icon-button dialog-close" id="requestDialogClose" type="button" aria-label="بستن پنجره">×</button></div>
+    <div class="dialog-content">
+      <h2 id="requestDialogTitle">متن درخواست آماده است</h2>
+      <p>متن زیر را بررسی کن، کپی کن و سپس در گفت‌وگوی ایتا برای هورا بفرست.</p>
+      <label class="request-text-label" for="requestMessage">متن پیام</label>
+      <textarea id="requestMessage" class="request-message" rows="5" readonly></textarea>
+      <div class="dialog-actions"><button class="button button-primary" id="copyRequestText" type="button">کپی متن درخواست</button><a class="button button-secondary" id="openEitaaRequest" href="https://eitaa.com/hojat_k82" target="_blank" rel="noopener noreferrer">باز کردن ایتا ↗</a></div>
+      <p class="request-hint">این سایت درخواست را روی سرور ذخیره نمی‌کند. ارسال پیام با تأیید خودت انجام می‌شود.</p>
+    </div>
+  </dialog>
+  <dialog class="service-dialog" id="serviceDialog" aria-labelledby="dialogTitle"><div class="dialog-header"><span class="dialog-eyebrow">جزئیات خدمت</span><button class="icon-button dialog-close" id="dialogClose" aria-label="بستن پنجره">×</button></div><div class="dialog-content" id="dialogContent"></div></dialog>
+</body>
 </html>
