@@ -1,224 +1,157 @@
-(() => {
+(function () {
   'use strict';
-  const EITAA_URL = 'https://eitaa.com/hojat_k82';
-  const STORAGE = { theme: 'hura-theme-v2', favorites: 'hura-favorites-v2' };
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const iconPaths = {
-    pos:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M7 20h10M12 17v3M7 8h10M7 12h5"/>',
-    cashless:'<rect x="5" y="2.5" width="14" height="19" rx="2.5"/><path d="M9 6h6M8 10h8M9 17h6"/>',
-    'pos-repair':'<path d="M14.5 6.5a5 5 0 0 0-6.8 6.8L3 18l3 3 4.7-4.7a5 5 0 0 0 6.8-6.8L14 13l-3-3z"/>',
-    insurance:'<path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/>',
-    'third-party':'<path d="M5 17h14l-1.2-6a2 2 0 0 0-2-1.6H8.2a2 2 0 0 0-2 1.6L5 17Z"/><path d="M7 17v2m10-2v2M7 13h.01M17 13h.01M8 9l1-3h6l1 3"/>',
-    plate:'<rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6 10h2m2 0h2m2 0h4M6 14h12"/>',
-    'vehicle-transfer':'<path d="M7 7h13l-3-3M20 7l-3 3M17 17H4l3 3M4 17l3-3"/>',
-    license:'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="10" r="2"/><path d="M5.5 16c.8-2 4.2-2 5 0M13 9h5m-5 4h5"/>',
-    tax:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h2m4 0h2M8 16h8"/>',
-    sim:'<rect x="6" y="2" width="12" height="20" rx="2"/><path d="M9 6h6v5H9zM10 18h4"/>',
-    internet:'<path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0m-10.5 3.5a5 5 0 0 1 7 0M12 19h.01"/>',
-    printing:'<path d="M6 9V3h12v6M6 17H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6zM17 12h.01"/>',
-    forms:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
-    online:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/>',
-    'business-ad':'<path d="m3 11 18-5v12L3 13z"/><path d="M7 14l2 6h4l-3-7M21 10l2-2m-2 10 2 2"/>',
-    consult:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4.2 1.8c-1.2 1-1.7 1.3-1.7 2.7M12 17h.01"/>',
-    other:'<path d="M12 5v14M5 12h14"/>',
-    'کسب‌وکار':'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V4h8v3M3 12h18M10 12v2h4v-2"/>',
-    'بیمه و خودرو':'<path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/>',
-    'مدارک هویتی':'<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="10" r="2"/><path d="M5.5 16c.8-2 4.2-2 5 0M13 9h5m-5 4h5"/>',
-    'ارتباطات':'<path d="M2 8.5a15 15 0 0 1 20 0M5 12a10 10 0 0 1 14 0m-10.5 3.5a5 5 0 0 1 7 0M12 19h.01"/>',
-    'خدمات اداری':'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
-    'راهنمایی':'<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4.2 1.8c-1.2 1-1.7 1.3-1.7 2.7M12 17h.01"/>',
-    sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>',
-    moon:'<path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/>',
-    menu:'<path d="M3 6h18M3 12h18M3 18h18"/>',
-    search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
-    arrow:'<path d="M5 12h14m-6-6 6 6-6 6"/>',
-    heart:'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/>'
+    house:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1Z"/>','user-round':'<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>',
+    moon:'<path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>',menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',x:'<path d="m18 6-12 12M6 6l12 12"/>', 'arrow-left':'<path d="M19 12H5m7 7-7-7 7-7"/>','arrow-up':'<path d="M12 19V5m-7 7 7-7 7 7"/>','chevron-left':'<path d="m15 18-6-6 6-6"/>','sparkles':'<path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3Z"/><path d="m19 14 1.1 2.9L23 18l-2.9 1.1L19 22l-1.1-2.9L15 18l2.9-1.1L19 14Z"/>','map-pin':'<path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>','circle-play':'<circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z"/>','file-check-2':'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 14l2.5 2.5L16 11"/>','check-circle-2':'<circle cx="12" cy="12" r="10"/><path d="m8 12 2.5 2.5L16 9"/>','store':'<path d="M3 10h18l-2-7H5zM5 10v10h14V10M9 20v-6h6v6"/>','zap':'<path d="m13 2-3 8h7l-6 12 1-9H6l7-11Z"/>','files':'<path d="M15 2H6a2 2 0 0 0-2 2v14M8 6h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"/><path d="M10 11h6m-6 4h6"/>','car-front':'<path d="m5 17-1 3h3l1-2h8l1 2h3l-1-3M5 17l-2-2 2-7h14l2 7-2 2M5 17h14M7 12h.01M17 12h.01M7 8l2-4h6l2 4"/>','credit-card':'<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20m-15 5h4"/>','layers-3':'<path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/>','search':'<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>','search-x':'<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4m-7-8 4 4m0-4-4 4"/>','info':'<circle cx="12" cy="12" r="10"/><path d="M12 11v5m0-9h.01"/>','route':'<circle cx="6" cy="19" r="2"/><path d="M8 19h5a3 3 0 0 0 3-3V8a3 3 0 0 1 3-3h-1"/><circle cx="18" cy="5" r="2"/>','clipboard-list':'<rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 4.5h6M9 10h6m-6 4h6m-6 4h3"/>','send':'<path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/>','heart-handshake':'<path d="M12 21s-8-4.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.5-8 11-8 11Z"/><path d="m7 13 2-1 3 2 3-2 2 1"/>','messages-square':'<path d="M21 11.5a7.5 7.5 0 0 1-8 7.5 8.5 8.5 0 0 1-3-.5L4 21l1.5-4A7.5 7.5 0 1 1 21 11.5Z"/><path d="M8 10h8m-8 4h5"/>','clipboard-check':'<rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 4V2h6v2m-6 9 2 2 4-4"/>','shield-check':'<path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11Z"/><path d="m9 12 2 2 4-4"/>','copy':'<rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/>','share-2':'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.7 10.7 6.6-4.4m-6.6 7.4 6.6 4.4"/>','printer':'<path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v7H6zM18 12h.01"/>','landmark':'<path d="M3 10h18M5 10v9m4-9v9m6-9v9m4-9v9M3 21h18M12 3 2 8h20L12 3Z"/>','file-text':'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8m-8 4h8"/>','car':'<path d="m5 11 2-6h10l2 6M3 11h18l1 7H2l1-7Z"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>','wallet':'<rect x="3" y="5" width="18" height="15" rx="2"/><path d="M3 8h18m-5 5h5"/>','wrench':'<path d="M14.7 6.3a5 5 0 0 0-6.4 6.4L3 18l3 3 5.3-5.3a5 5 0 0 0 6.4-6.4L14 13l-3-3 3.7-3.7Z"/>','monitor':'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/>','image':'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>','globe':'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20Z"/>','building-2':'<path d="M3 21h18M5 21V5l7-3 7 3v16M9 9h1m4 0h1M9 13h1m4 0h1M9 17h1m4 0h1"/>','badge-check':'<path d="M12 3 15 5l4-.2.2 4L21 12l-1.8 3.2-.2 4-4-.2L12 21l-3-2-4 .2-.2-4L3 12l1.8-3.2.2-4 4 .2 3-2Z"/><path d="m8.5 12 2.2 2.2 4.8-4.8"/>','package':'<path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="M3 8v9l9 5 9-5V8M12 13v9"/>','phone':'<path d="M22 16.9v3a2 2 0 0 1-2.2 2A19.8 19.8 0 0 1 11.2 19a19.4 19.4 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7l.5 2.8a2 2 0 0 1-.6 1.9L7.2 10a16 16 0 0 0 6 6l1.6-1.8a2 2 0 0 1 1.9-.6l2.8.5a2 2 0 0 1 1.7 2Z"/>','calendar-check':'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M16 2v4M8 2v4M3 9h18m-13 5 2 2 4-4"/>','receipt':'<path d="M4 2v20l4-2 4 2 4-2 4 2V2l-4 2-4-2-4 2-4-2Z"/><path d="M8 9h8m-8 4h8"/>','truck':'<path d="M3 6h12v12H3zM15 10h4l3 4v4h-7z"/><circle cx="7.5" cy="19" r="2"/><circle cx="18.5" cy="19" r="2"/>','wifi':'<path d="M5 12.5a11 11 0 0 1 14 0M8 15.5a6 6 0 0 1 8 0M11 18.5a2 2 0 0 1 2 0"/><path d="M12 22h.01"/>','book-open':'<path d="M2 4h7a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2zM22 4h-7a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h8z"/>','headphones':'<path d="M3 14v-3a9 9 0 0 1 18 0v3M3 14h4v7H5a2 2 0 0 1-2-2zM21 14h-4v7h2a2 2 0 0 0 2-2z"/>','smartphone':'<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 18h2"/>','shopping-bag':'<path d="M5 8h14l1 13H4L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>'
   };
-  function iconSvg(name, extraClass='') {
-    const path = iconPaths[name] || iconPaths.other;
-    return `<svg class="svg-icon ${extraClass}" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${path}</svg>`;
-  }
+  function icon(name){return '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(iconPaths[name]||iconPaths.sparkles)+'</svg>';}
   const services = [
-    {id:'pos',title:'فروش و خدمات کارتخوان',category:'کسب‌وکار',icon:'▣',tag:'کسب‌وکار',description:'راهنمای تهیه کارتخوان نو یا کارکرده، بررسی شرایط اتصال و پذیرش درخواست تعمیرات.',documents:['کارت ملی متقاضی','شماره تلفن همراه به نام متقاضی','اطلاعات حساب و شبای بانکی در صورت نیاز','مدارک شغلی یا مالیاتی در صورت درخواست شرکت ارائه‌دهنده'],note:'نوع دستگاه، شرایط احراز و امکان اتصال به بانک باید پیش از ثبت نهایی بررسی شود.'},
-    {id:'cashless',title:'دستگاه کش‌لس',category:'کسب‌وکار',icon:'▤',tag:'کسب‌وکار',description:'ثبت درخواست برای آشنایی با دستگاه‌های پرداخت بدون دریافت وجه نقد و شرایط تهیه آن.',documents:['کارت ملی متقاضی','شماره تماس فعال','اطلاعات کسب‌وکار','مدارک تکمیلی طبق ضوابط ارائه‌دهنده'],note:'موجودی، قیمت و شرایط ارائه دستگاه پس از استعلام مشخص می‌شود.'},
-    {id:'pos-repair',title:'تعمیرات کارتخوان',category:'کسب‌وکار',icon:'⚙',tag:'تعمیرات',description:'ثبت درخواست بررسی ایرادهای نرم‌افزاری یا سخت‌افزاری دستگاه کارتخوان.',documents:['مدل دستگاه و نام شرکت پرداخت','شرح دقیق ایراد','شماره تماس برای هماهنگی','تصویر دستگاه یا پیام خطا در صورت امکان'],note:'هزینه و امکان تعمیر پس از بررسی دستگاه اعلام می‌شود؛ اطلاعات حساس کارت بانکی را ارسال نکنید.'},
-    {id:'insurance',title:'خدمات بیمه',category:'بیمه و خودرو',icon:'◇',tag:'بیمه',description:'راهنمای دریافت یا تمدید بیمه‌نامه و بررسی مدارک متناسب با نوع بیمه.',documents:['کارت ملی بیمه‌گذار','شماره تماس','بیمه‌نامه قبلی در صورت تمدید','مدارک اختصاصی متناسب با نوع بیمه'],note:'مدارک دقیق به نوع بیمه و شرکت بیمه‌گر بستگی دارد.'},
-    {id:'third-party',title:'بیمه شخص ثالث',category:'بیمه و خودرو',icon:'◈',tag:'بیمه خودرو',description:'ثبت درخواست استعلام و پیگیری شرایط بیمه شخص ثالث خودرو یا موتورسیکلت.',documents:['کارت ملی مالک یا بیمه‌گذار','کارت خودرو یا برگ سبز','بیمه‌نامه قبلی در صورت وجود','اطلاعات کاربری وسیله نقلیه'],note:'مبلغ نهایی و پوشش بیمه پس از استعلام از مرجع ارائه‌دهنده مشخص می‌شود.'},
-    {id:'plate',title:'خدمات تعویض پلاک',category:'بیمه و خودرو',icon:'▦',tag:'خودرو',description:'راهنمای آماده‌سازی مدارک و آگاهی از مراحل متداول تعویض پلاک.',documents:['مدارک هویتی طرفین معامله','مدارک مالکیت و شناسایی خودرو','مدرک احراز محل سکونت طبق ضوابط','مدارک تسویه و معاینه فنی در صورت نیاز'],note:'فهرست مدارک و مراحل ممکن است با مقررات و وضعیت پرونده تغییر کند؛ نوبت‌دهی رسمی از مسیر مرجع مربوط انجام می‌شود.'},
-    {id:'vehicle-transfer',title:'راهنمای نقل‌وانتقال خودرو',category:'بیمه و خودرو',icon:'⇄',tag:'خودرو',description:'آشنایی با مدارک متداول و آماده‌سازی اولیه برای فرایند نقل‌وانتقال.',documents:['مدارک هویتی خریدار و فروشنده','مدارک مالکیت خودرو','مدارک احراز محل سکونت حسب ضوابط','مدارک تسویه عوارض و جرایم در صورت نیاز'],note:'این بخش راهنماست و جایگزین بررسی شرایط پرونده توسط مراجع رسمی نیست.'},
-    {id:'license',title:'خدمات گواهینامه',category:'مدارک هویتی',icon:'▤',tag:'مدارک',description:'راهنمای اولیه مدارک موردنیاز برای پیگیری برخی امور مرتبط با گواهینامه.',documents:['مدرک هویتی معتبر','گواهینامه قبلی در صورت تمدید یا تعویض','عکس یا مدارک پزشکی در صورت مطالبه مرجع مربوط','اطلاعات تماس متقاضی'],note:'نوع درخواست (صدور، تمدید، المثنی یا اصلاح اطلاعات) مدارک را تغییر می‌دهد.'},
-    {id:'tax',title:'خدمات مالیاتی',category:'کسب‌وکار',icon:'٪',tag:'کسب‌وکار',description:'راهنمای اولیه برای آماده‌سازی اطلاعات موردنیاز امور مالیاتی کسب‌وکار.',documents:['اطلاعات هویتی مؤدی','شناسه یا اطلاعات پرونده مالیاتی در صورت وجود','اطلاعات کسب‌وکار و نشانی','مدارک تکمیلی متناسب با نوع درخواست'],note:'رمز عبور و کدهای یک‌بارمصرف را در پیام عمومی ارسال نکنید.'},
-    {id:'sim',title:'خدمات سیم‌کارت',category:'ارتباطات',icon:'▥',tag:'ارتباطات',description:'راهنمای درخواست‌های متداول سیم‌کارت و بررسی مدارک اولیه.',documents:['کارت ملی معتبر','شماره تماس در دسترس','اطلاعات سیم‌کارت فعلی در صورت تعویض یا پیگیری','مدارک تکمیلی طبق مقررات اپراتور'],note:'ارائه خدمت تابع ضوابط اپراتور و احراز هویت رسمی است.'},
-    {id:'internet',title:'اینترنت و مودم',category:'ارتباطات',icon:'⌁',tag:'ارتباطات',description:'ثبت درخواست راهنمایی برای انتخاب یا پیگیری خدمات اینترنت و تجهیزات مرتبط.',documents:['نشانی محل استفاده','شماره تماس','نوع اتصال یا اپراتور مدنظر در صورت مشخص بودن','مدل مودم در صورت درخواست پشتیبانی'],note:'پوشش، تعرفه و امکان ارائه خدمت باید از اپراتور مربوط استعلام شود.'},
-    {id:'printing',title:'تایپ، پرینت و اسکن',category:'خدمات اداری',icon:'▧',tag:'خدمات اداری',description:'ثبت درخواست برای خدمات عمومی تایپ، چاپ و اسکن مدارک.',documents:['فایل یا تصویر خوانای مدرک','تعداد نسخه یا صفحات','نوع خروجی موردنظر','زمان تحویل مدنظر'],note:'پیش از ارسال مدارک محرمانه، درباره روش تحویل و نگهداری فایل هماهنگ کنید.'},
-    {id:'forms',title:'تکمیل فرم‌های اینترنتی',category:'خدمات اداری',icon:'☷',tag:'خدمات اداری',description:'راهنمای آماده‌سازی اطلاعات و ثبت درخواست کمک در تکمیل فرم‌های اینترنتی.',documents:['نام سامانه یا نوع فرم','اطلاعات موردنیاز فرم','مدارک لازم طبق دستورالعمل همان سامانه','راه تماس برای هماهنگی'],note:'رمزها، اطلاعات بانکی و کدهای تأیید را ارسال نکنید؛ ثبت نهایی باید با تأیید خود متقاضی باشد.'},
-    {id:'online',title:'پیگیری خدمات آنلاین',category:'خدمات اداری',icon:'◎',tag:'خدمات آنلاین',description:'ثبت درخواست راهنمایی برای پیدا کردن مسیر رسمی پیگیری یک خدمت اینترنتی.',documents:['نام خدمت یا سامانه','کد پیگیری در صورت وجود','شرح مرحله‌ای که در آن مشکل دارید','تصویر خطا با پوشاندن اطلاعات حساس'],note:'امکان پیگیری هر پرونده به دسترسی سامانه و مجوزهای قانونی بستگی دارد.'},
-    {id:'business-ad',title:'تبلیغات کسب‌وکار',category:'کسب‌وکار',icon:'✳',tag:'تبلیغات',description:'ثبت درخواست برای بررسی انتشار معرفی یا تبلیغ کسب‌وکار در بسترهای قابل ارائه هورا.',documents:['نام کسب‌وکار و حوزه فعالیت','متن یا تصویر تبلیغ','راه ارتباطی موردنظر','محدوده مخاطب و زمان انتشار پیشنهادی'],note:'بستر، هزینه و زمان انتشار باید پیش از سفارش تأیید شود.'},
-    {id:'consult',title:'راهنمای انتخاب خدمت',category:'راهنمایی',icon:'✦',tag:'راهنمایی',description:'اگر دقیق نمی‌دانی کدام خدمت مناسب توست، مسئله‌ات را توضیح بده تا مسیر مناسب بررسی شود.',documents:['شرح کوتاه نیاز یا مسئله','شهر یا محدوده خدمت در صورت مرتبط بودن','زمان مدنظر','مدارک مرتبط فقط در صورت درخواست پشتیبانی'],note:'ارسال اطلاعات حساس یا اصل مدارک در پیام اول لازم نیست.'},
-    {id:'other',title:'سایر خدمات و درخواست‌ها',category:'راهنمایی',icon:'＋',tag:'سایر خدمات',description:'برای خدمتی که در فهرست نیست، درخواست خود را توضیح بده تا امکان ارائه آن بررسی شود.',documents:['شرح روشن خدمت موردنظر','اطلاعات تماس','زمان مدنظر','مدارک مرتبط در صورت نیاز و پس از هماهنگی'],note:'ثبت پیام به معنی تأیید امکان ارائه خدمت یا پذیرش سفارش نیست.'}
+    {id:'online-admin',title:'خدمات اداری و اینترنتی',category:'admin',categoryName:'اداری و آنلاین',icon:'landmark',tag:'پرکاربرد',color:'#2563eb',bg:'#dbeafe',description:'راهنمایی و انجام خدمات اینترنتی و اداری بر اساس نوع درخواست.',docs:['کارت ملی یا اطلاعات هویتی متقاضی','شماره تلفن همراه در دسترس','اطلاعات و مدارک اختصاصی همان خدمت'],note:'مدارک دقیق به سامانه و نوع درخواست بستگی دارد.'},
+    {id:'gov-services',title:'ثبت درخواست‌های سامانه‌ای',category:'admin',categoryName:'اداری و آنلاین',icon:'globe',tag:'آنلاین',color:'#0e7490',bg:'#cffafe',description:'کمک در ورود اطلاعات، بررسی مراحل و پیگیری درخواست‌های اینترنتی.',docs:['اطلاعات هویتی متقاضی','شماره همراه فعال و در دسترس','مدارک اعلام‌شده در سامانه مربوط'],note:'رمزهای یک‌بارمصرف را شخصاً وارد کنید و در اختیار دیگران نگذارید.'},
+    {id:'printing',title:'چاپ، کپی و اسکن مدارک',category:'digital',categoryName:'دیجیتال و چاپ',icon:'printer',tag:'حضوری',color:'#7c3aed',bg:'#ede9fe',description:'آماده‌سازی نسخه چاپی، کپی یا فایل اسکن‌شده مدارک و برگه‌ها.',docs:['فایل قابل چاپ یا اصل مدرک','اعلام تعداد نسخه و اندازه کاغذ','برای اسکن: مشخص کردن قالب فایل دلخواه'],note:'کیفیت خروجی به کیفیت فایل یا اصل مدرک وابسته است.'},
+    {id:'vehicle',title:'راهنمای خدمات خودرو',category:'vehicle',categoryName:'خودرو',icon:'car-front',tag:'خودرو',color:'#b45309',bg:'#fef3c7',description:'راهنمایی اولیه برای آماده‌سازی مدارک و مراحل خدمات خودرویی.',docs:['کارت ملی مالک یا نماینده قانونی','مدارک مالکیت و شناسایی خودرو','مدارک تکمیلی متناسب با نوع خدمت'],note:'این فهرست عمومی است؛ مدارک نهایی را مرجع مربوط تعیین می‌کند.'},
+    {id:'plate-transfer',title:'راهنمای تعویض پلاک',category:'vehicle',categoryName:'خودرو',icon:'badge-check',tag:'مرحله‌به‌مرحله',color:'#047857',bg:'#d1fae5',description:'چک‌لیست اولیه مدارک و آمادگی پیش از مراجعه برای تعویض پلاک.',docs:['مدارک هویتی خریدار و فروشنده','مدارک مالکیت خودرو و کارت خودرو','مدارک احراز محل سکونت طبق مقررات','مدارک و نوبت موردنیاز مرکز مربوط'],note:'شرایط و مدارک ممکن است با مقررات روز تغییر کند.'},
+    {id:'pos-sales',title:'فروش دستگاه کارتخوان',category:'business',categoryName:'کسب‌وکار',icon:'credit-card',tag:'ویژه کسب‌وکار',color:'#2563eb',bg:'#dbeafe',description:'مشاوره انتخاب کارتخوان نو یا کارکرده، سیم‌کارتی یا وای‌فای‌دار، متناسب با نیاز پذیرنده.',docs:['مدارک هویتی متقاضی','مدارک کسب‌وکار و حساب بانکی موردنیاز شرکت پرداخت','اطلاعات محل فعالیت و نوع استفاده'],note:'پذیرش و اتصال دستگاه به تأیید شرکت پرداخت و بانک وابسته است.'},
+    {id:'pos-support',title:'پشتیبانی و تعمیر کارتخوان',category:'business',categoryName:'کسب‌وکار',icon:'wrench',tag:'پشتیبانی',color:'#0f766e',bg:'#ccfbf1',description:'ثبت درخواست بررسی ایرادهای نرم‌افزاری یا سخت‌افزاری دستگاه‌های کارتخوان.',docs:['مدل و شماره سریال دستگاه','شرح خطا یا مشکل مشاهده‌شده','اطلاعات تماس پذیرنده؛ اطلاعات محرمانه کارت لازم نیست'],note:'تعمیرپذیری و هزینه پس از بررسی دستگاه مشخص می‌شود.'},
+    {id:'cashless',title:'دستگاه کش‌لس',category:'business',categoryName:'کسب‌وکار',icon:'wallet',tag:'ویژه فروشگاه',color:'#7c3aed',bg:'#ede9fe',description:'دریافت اطلاعات اولیه برای بررسی دستگاه‌های پرداخت و خدمات کش‌لس متناسب با محل فعالیت.',docs:['مدارک هویتی متقاضی','اطلاعات محل کسب‌وکار','نیازمندی‌ها و نوع خدمات موردنظر'],note:'امکان ارائه و شرایط فعال‌سازی باید پیش از خرید تأیید شود.'},
+    {id:'business-digital',title:'خدمات دیجیتال کسب‌وکار',category:'business',categoryName:'کسب‌وکار',icon:'store',tag:'رشد کسب‌وکار',color:'#c2410c',bg:'#ffedd5',description:'کمک به معرفی آنلاین مغازه، تنظیم اطلاعات کسب‌وکار و آماده‌سازی محتوای معرفی خدمات.',docs:['نام و زمینه فعالیت کسب‌وکار','نشانی و راه‌های ارتباطی قابل انتشار','لوگو، تصاویر یا متن معرفی در صورت وجود'],note:'انتشار اطلاعات فقط با تأیید صاحب کسب‌وکار انجام شود.'},
+    {id:'design-print',title:'طراحی و آماده‌سازی تبلیغات',category:'digital',categoryName:'دیجیتال و چاپ',icon:'image',tag:'محتوا',color:'#be185d',bg:'#fce7f3',description:'آماده‌سازی متن یا طرح اولیه برای تراکت، کارت تبلیغاتی و محتوای شبکه‌های اجتماعی.',docs:['نام و اطلاعات صحیح کسب‌وکار','متن و خدمات موردنظر','لوگو یا تصاویر مورد استفاده، در صورت وجود'],note:'چاپ نهایی، تیراژ و هزینه باید جداگانه هماهنگ شود.'},
+    {id:'web-tools',title:'راه‌اندازی ابزارهای آنلاین',category:'digital',categoryName:'دیجیتال و چاپ',icon:'monitor',tag:'دیجیتال',color:'#0369a1',bg:'#e0f2fe',description:'مشاوره اولیه برای صفحه معرفی، فرم ثبت درخواست یا ابزار ساده آنلاین کسب‌وکار.',docs:['هدف و نوع ابزار موردنیاز','نام برند و اطلاعات تماس','متن، تصاویر و امکانات ضروری'],note:'دامنه، میزبانی یا سرویس‌های پولی ممکن است هزینه جداگانه داشته باشند.'},
+    {id:'form-help',title:'تکمیل و آماده‌سازی فرم‌ها',category:'admin',categoryName:'اداری و آنلاین',icon:'file-text',tag:'مدارک',color:'#4f46e5',bg:'#e0e7ff',description:'مرتب‌سازی اطلاعات و راهنمایی برای تکمیل فرم‌ها و آماده‌سازی فایل‌های لازم.',docs:['فرم یا نشانی سامانه مربوط','اطلاعاتی که در فرم درخواست شده','مدارک پشتیبان موردنیاز همان فرم'],note:'اطلاعات را پیش از تأیید نهایی خودتان بررسی کنید.'},
+    {id:'insurance-issue',title:'صدور بیمه‌نامه',category:'insurance',categoryName:'بیمه',icon:'shield-check',tag:'بیمه',color:'#0f766e',bg:'#ccfbf1',description:'ثبت درخواست برای بررسی شرایط و صدور بیمه‌نامه متناسب با نیاز شما.',docs:['کارت ملی و اطلاعات تماس','مشخصات بیمه‌گذار و مورد بیمه','مدارک اختصاصی نوع بیمه'],note:'صدور نهایی و نرخ بیمه پس از بررسی شرکت بیمه و شرایط بیمه‌نامه مشخص می‌شود.'},
+    {id:'insurance-renew',title:'تمدید بیمه‌نامه',category:'insurance',categoryName:'بیمه',icon:'calendar-check',tag:'تمدید',color:'#0369a1',bg:'#e0f2fe',description:'پیگیری اولیه برای تمدید بیمه‌نامه و بررسی مدارک و زمان اعتبار.',docs:['تصویر بیمه‌نامه قبلی','کد ملی و شماره تماس','اطلاعات به‌روز مورد بیمه'],note:'شرایط تمدید، تخفیف‌ها و نرخ نهایی باید از شرکت بیمه استعلام شود.'},
+    {id:'insurance-thirdparty',title:'بیمه شخص ثالث خودرو',category:'insurance',categoryName:'بیمه',icon:'car-front',tag:'خودرو',color:'#b45309',bg:'#fef3c7',description:'درخواست استعلام و صدور یا تمدید بیمه شخص ثالث خودرو.',docs:['کارت خودرو یا برگ سبز','کد ملی مالک','بیمه‌نامه قبلی در صورت وجود'],note:'تعرفه و شرایط نهایی براساس مشخصات خودرو و مقررات جاری محاسبه می‌شود.'},
+    {id:'insurance-body',title:'بیمه بدنه خودرو',category:'insurance',categoryName:'بیمه',icon:'car',tag:'خودرو',color:'#7c3aed',bg:'#ede9fe',description:'بررسی پوشش‌های بیمه بدنه و دریافت استعلام متناسب با خودرو.',docs:['مشخصات خودرو و مالک','تصاویر یا بازدید خودرو در صورت نیاز','بیمه‌نامه قبلی در صورت وجود'],note:'پوشش‌ها، فرانشیز و نیاز به بازدید پس از بررسی مشخص می‌شود.'},
+    {id:'insurance-life',title:'بیمه عمر و زندگی',category:'insurance',categoryName:'بیمه',icon:'heart-handshake',tag:'زندگی',color:'#be185d',bg:'#fce7f3',description:'آشنایی اولیه با گزینه‌های بیمه عمر و ثبت درخواست مشاوره.',docs:['سن و اطلاعات تماس متقاضی','هدف و مدت موردنظر','اطلاعات تکمیلی که شرکت بیمه درخواست کند'],note:'مزایا و شرایط بیمه‌نامه باید در پیشنهاد رسمی شرکت بیمه بررسی شود.'},
+    {id:'insurance-home',title:'بیمه آتش‌سوزی و منزل',category:'insurance',categoryName:'بیمه',icon:'building-2',tag:'اموال',color:'#c2410c',bg:'#ffedd5',description:'درخواست بررسی پوشش‌های آتش‌سوزی و حوادث ساختمان و اثاثیه.',docs:['نشانی و مشخصات ملک','نوع کاربری و متراژ تقریبی','ارزش تقریبی ساختمان یا اثاثیه'],note:'محدوده پوشش و سرمایه بیمه‌شده در بیمه‌نامه نهایی تعیین می‌شود.'},
+    {id:'insurance-travel',title:'بیمه مسافرتی',category:'insurance',categoryName:'بیمه',icon:'globe',tag:'سفر',color:'#0891b2',bg:'#cffafe',description:'استعلام بیمه مسافرتی براساس مقصد، مدت سفر و شرایط مسافر.',docs:['اطلاعات هویتی مسافران','کشور مقصد و تاریخ سفر','سن مسافران و مدت اقامت'],note:'پوشش و پذیرش بیمه به مقصد و شرایط شرکت بیمه بستگی دارد.'},
+    {id:'insurance-business',title:'بیمه مسئولیت و کسب‌وکار',category:'insurance',categoryName:'بیمه',icon:'store',tag:'کسب‌وکار',color:'#047857',bg:'#d1fae5',description:'ثبت درخواست بررسی بیمه‌های مسئولیت و پوشش‌های مرتبط با محل کسب‌وکار.',docs:['نوع فعالیت و نشانی محل','تعداد کارکنان یا مراجعه‌کنندگان در صورت ارتباط','شرح پوشش موردنیاز'],note:'نوع بیمه مناسب پس از بررسی فعالیت و ریسک‌های مربوط مشخص می‌شود.'},
+    {id:'sim-lines',title:'فروش سیم‌کارت و خط رند',category:'shop',categoryName:'فروشگاه هورا',icon:'phone',tag:'فروش',color:'#4f46e5',bg:'#e0e7ff',description:'برای موجودی، اپراتور، شماره‌های رند و قیمت روز استعلام بگیرید.',docs:['اپراتور یا پیش‌شماره موردنظر','بودجه تقریبی و نوع خط','شرایط انتقال مالکیت را پیش از خرید بررسی کنید'],note:'موجودی و قیمت خطوط متغیر است؛ پیش از پرداخت از هورا استعلام بگیرید.'}
   ];
-  const categories = [
-    {name:'کسب‌وکار',icon:'▣',description:'کارتخوان، مالیات و تبلیغات'},
-    {name:'بیمه و خودرو',icon:'◈',description:'بیمه، تعویض پلاک و خودرو'},
-    {name:'مدارک هویتی',icon:'▤',description:'راهنمای امور مدارک'},
-    {name:'ارتباطات',icon:'⌁',description:'سیم‌کارت و اینترنت'},
-    {name:'خدمات اداری',icon:'▧',description:'تایپ، چاپ و فرم‌ها'},
-    {name:'راهنمایی',icon:'✦',description:'انتخاب خدمت و درخواست دیگر'}
-  ];
-  const $ = (s, root=document) => root.querySelector(s);
-  const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-  const state = {category:'all', query:'', favoritesOnly:false, sort:'default', flipped:new Set(), slide:0, toastTimer:null};
-  const safeRead = (key, fallback) => { try { const value = localStorage.getItem(key); return value === null ? fallback : JSON.parse(value); } catch { return fallback; } };
-  const safeWrite = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* storage may be disabled */ } };
-  let favorites = new Set(safeRead(STORAGE.favorites, []));
+  let activeCategory = 'all';
+  const grid = $('#services-grid');
+  const searchInput = $('#service-search');
+  const status = $('#app-status');
+  let toastTimer;
 
-  function showToast(message) {
-    const toast = $('#toast'); if (!toast) return;
-    toast.textContent = message; toast.classList.add('is-visible');
-    clearTimeout(state.toastTimer); state.toastTimer = setTimeout(() => toast.classList.remove('is-visible'), 2600);
+  function renderIcons(root=document){ $$('[data-icon]',root).forEach(el=>{const name=el.getAttribute('data-icon');el.innerHTML=icon(name);}); }
+  function safeText(value){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+  function serviceCard(s){
+    const docs=s.docs.map(d=>'<li>'+safeText(d)+'</li>').join('');
+    return '<article class="service-card" data-id="'+s.id+'" style="--icon-bg:'+s.bg+';--icon-color:'+s.color+';--card-glow:'+s.bg+'"><div class="service-card-inner"><div class="service-face service-front"><div class="service-card-top"><span class="service-icon">'+icon(s.icon)+'</span><span class="service-tag">'+safeText(s.tag)+'</span></div><h3>'+safeText(s.title)+'</h3><p>'+safeText(s.description)+'</p><div class="service-meta">'+icon('layers-3')+'<span>'+safeText(s.categoryName)+'</span></div><div class="service-card-actions"><button class="btn details-btn" type="button" data-action="flip" data-id="'+s.id+'">'+icon('file-text')+' مدارک لازم</button><button class="btn btn-primary" type="button" data-action="request" data-id="'+s.id+'">ثبت درخواست '+icon('arrow-left')+'</button></div></div><div class="service-face service-back"><h3>'+safeText(s.title)+'</h3><p class="back-subtitle">چک‌لیست اولیه پیش از ثبت درخواست</p><div class="docs-title">'+icon('clipboard-check')+' مدارک و اطلاعات موردنیاز</div><ul class="docs-list">'+docs+'</ul><div class="docs-disclaimer">'+safeText(s.note)+'</div><div class="service-card-actions"><button class="btn details-btn" type="button" data-action="flip" data-id="'+s.id+'">'+icon('arrow-left')+' بازگشت</button><button class="btn btn-primary" type="button" data-action="request" data-id="'+s.id+'">ثبت درخواست '+icon('arrow-left')+'</button></div></div></div></article>';
   }
-  function applyTheme(theme) {
-    const selected = theme === 'light' ? 'light' : 'dark';
-    document.documentElement.dataset.theme = selected;
-    const glyph = $('#themeGlyph'); if (glyph) glyph.innerHTML = iconSvg(selected === 'dark' ? 'sun' : 'moon');
-    const themeButton = $('#themeToggle'); if (themeButton) themeButton.setAttribute('aria-label', selected === 'dark' ? 'روشن کردن پوسته' : 'تاریک کردن پوسته');
-    const meta = $('meta[name="theme-color"]'); if (meta) meta.content = selected === 'dark' ? '#091321' : '#f4f8fb';
-    safeWrite(STORAGE.theme, selected);
+  function updateServices(){
+    const query=(searchInput.value||'').trim().toLocaleLowerCase('fa');
+    const shown=services.filter(s=>s.category!=='shop'&&(activeCategory==='all'||s.category===activeCategory)&&(!query||(s.title+' '+s.description+' '+s.categoryName+' '+s.tag+' '+s.docs.join(' ')).toLocaleLowerCase('fa').includes(query)));
+    grid.innerHTML=shown.map(serviceCard).join('');
+    $('#visible-count').textContent=shown.length.toLocaleString('fa-IR');
+    $('#empty-state').hidden=shown.length!==0; grid.hidden=shown.length===0;
+    renderIcons(grid);
   }
-  function toggleTheme() { applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'); }
-  function requestText(service) {
-    return `سلام، برای خدمت «${service.title}» از هورا راهنمایی می‌خواهم.\nلطفاً شرایط، مدارک دقیق، هزینه احتمالی و مراحل انجام را اعلام کنید.\nتوضیحات تکمیلی: `;
+  function setStatus(message,type){status.textContent=message;status.className='app-status'+(type?' '+type:'');}
+  function toggleTheme(){const dark=document.body.classList.toggle('dark');try{localStorage.setItem('hura-theme',dark?'dark':'light');}catch(e){}$('#theme-toggle').innerHTML=icon(dark?'sun':'moon');$('#theme-toggle').setAttribute('aria-label',dark?'فعال‌کردن پوسته روشن':'فعال‌کردن پوسته تیره');}
+  function initTheme(){let saved='';try{saved=localStorage.getItem('hura-theme')||'';}catch(e){}if(saved==='dark')document.body.classList.add('dark');$('#theme-toggle').innerHTML=icon(document.body.classList.contains('dark')?'sun':'moon');}
+  function initPromoSlider(){
+    const slides=$$('.promo-slide'); const dots=$$('.promo-dot');
+    if(!slides.length)return;
+    let current=0; let timer;
+    const show=(index)=>{current=(index+slides.length)%slides.length;slides.forEach((slide,i)=>slide.classList.toggle('active',i===current));dots.forEach((dot,i)=>dot.classList.toggle('active',i===current));};
+    const restart=()=>{if(timer)clearInterval(timer);timer=setInterval(()=>show(current+1),3000);};
+    $('#promo-prev').addEventListener('click',()=>{show(current-1);restart();});
+    $('#promo-next').addEventListener('click',()=>{show(current+1);restart();});
+    dots.forEach(dot=>dot.addEventListener('click',()=>{show(Number(dot.dataset.slideTo));restart();}));
+    restart();
   }
-  async function copyText(text) {
-    try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; } } catch { /* use fallback */ }
-    try {
-      const area = document.createElement('textarea'); area.value = text; area.setAttribute('readonly',''); area.style.position='fixed'; area.style.opacity='0'; document.body.appendChild(area); area.select();
-      const ok = document.execCommand('copy'); area.remove(); return ok;
-    } catch { return false; }
+  let currentView = 'home';
+  let previousView = 'home';
+  let selectedStoreCategory = 'all';
+  const viewIds = ['home','services','store','how','about'];
+  const categoryNames = {all:'همه خدمات',admin:'اداری و آنلاین',vehicle:'خودرو',business:'کسب‌وکار',digital:'دیجیتال و چاپ',insurance:'بیمه'};
+  function setActiveSection(id){
+    const serviceActive=id==='services'; const storeActive=id==='store';
+    $('#bottom-services').classList.toggle('active',serviceActive);
+    $('#bottom-store').classList.toggle('active',storeActive);
+    $$('.section-switch-btn').forEach(link=>link.classList.toggle('active',link.getAttribute('href')===(storeActive?'#store':'#services')));
   }
-  function startRequest(service) {
-    const dialog = $('#requestDialog');
-    const field = $('#requestMessage');
-    if (!dialog || !field) { showToast('متن درخواست در دسترس نیست؛ از راه ارتباطی ایتا استفاده کن.'); return; }
-    if ($('#serviceDialog')?.open) $('#serviceDialog').close();
-    field.value = requestText(service);
-    $('#requestDialogTitle').textContent = `درخواست «${service.title}»`;
-    $('#openEitaaRequest').href = EITAA_URL;
-    if (typeof dialog.showModal === 'function') dialog.showModal();
-    else { field.focus(); field.select(); showToast('متن درخواست آماده است؛ آن را کپی و در ایتا ارسال کن.'); }
+  function setView(id, options={}){
+    if(!viewIds.includes(id)) id='home';
+    currentView=id;
+    $$('[data-view]').forEach(panel=>{panel.hidden=panel.dataset.view!==id;});
+    $$('.nav-link[data-view-nav]').forEach(link=>link.classList.toggle('active',link.dataset.viewNav===id));
+    setActiveSection(id);
+    $('#promo-slider')?.classList.remove('slider-hidden');
+    $('#request-page').hidden=true; $('#purchase-page').hidden=true;
+    document.querySelector('.site-footer').hidden=false;
+    document.body.classList.remove('request-page-open');
+    if(options.hash!==false) history.replaceState({huraView:id},'', '#'+id);
+    if(options.scroll!==false) window.scrollTo({top:0,behavior:options.smooth?'smooth':'auto'});
   }
-  function escapeHTML(value) { return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch])); }
-  function getFilteredServices() {
-    let list = services.filter(service => {
-      const query = state.query.trim().toLocaleLowerCase('fa');
-      const matchesQuery = !query || `${service.title} ${service.description} ${service.category} ${service.tag}`.toLocaleLowerCase('fa').includes(query);
-      return matchesQuery && (state.category === 'all' || service.category === state.category) && (!state.favoritesOnly || favorites.has(service.id));
+  function applyServiceCategory(category){
+    activeCategory=categoryNames[category] ? category : 'all';
+    $$('.filter-chip').forEach(b=>b.classList.toggle('active',b.dataset.category===activeCategory));
+    const title=$('#services-heading'); const subtitle=$('#services-subheading');
+    if(title) title.textContent=activeCategory==='all'?'چه کاری از دست هورا برمیاد؟':'خدمات '+categoryNames[activeCategory];
+    if(subtitle) subtitle.textContent=activeCategory==='all'?'خدمت موردنظرت را جست‌وجو کن یا از دسته‌بندی‌ها شروع کن.':'خدمات مرتبط با دسته «'+categoryNames[activeCategory]+'» را اینجا می‌بینی.';
+    updateServices();
+  }
+  function filterStore(category){
+    selectedStoreCategory=category||'all';
+    $$('.store-category-chip').forEach(b=>b.classList.toggle('active',b.dataset.storeCategory===selectedStoreCategory));
+    $$('#store .store-card').forEach(card=>{card.hidden=selectedStoreCategory!=='all'&&card.dataset.productCategory!==selectedStoreCategory;});
+  }
+  function showRequestPage(label){
+    previousView=currentView;
+    $('#request-page-service').textContent=label ? 'برای «'+label+'» از طریق پیام خصوصی با هورا در ارتباط باش.' : 'خدمت موردنظر را از طریق پیام خصوصی برای ما بفرست.';
+    $$('[data-view]').forEach(panel=>panel.hidden=true);
+    $('#promo-slider').classList.add('slider-hidden');
+    document.querySelector('.site-footer').hidden=true;
+    $('#purchase-page').hidden=true; $('#request-page').hidden=false;
+    document.body.classList.add('request-page-open');
+    window.scrollTo(0,0); history.replaceState({huraSubpage:'request'},'', '#send-request');
+  }
+  function showPurchasePage(product,price,specs){
+    previousView=currentView==='store'?'store':currentView;
+    $('#purchase-page-product').textContent='برای استعلام موجودی و خرید «'+product+'» از پیام‌رسان دلخواهت با هورا در ارتباط باش.';
+    const details=$('#purchase-page-details');
+    details.innerHTML='<strong>'+safeText(product)+'</strong><span>'+safeText(price||'قیمت نهایی نیازمند استعلام است')+'</span><p>'+safeText(specs||'مشخصات و موجودی هنگام استعلام تأیید می‌شود.')+'</p>';
+    details.hidden=false;
+    $$('[data-view]').forEach(panel=>panel.hidden=true);
+    $('#promo-slider').classList.add('slider-hidden');
+    document.querySelector('.site-footer').hidden=true; $('#request-page').hidden=true; $('#purchase-page').hidden=false;
+    document.body.classList.add('request-page-open'); window.scrollTo(0,0); history.replaceState({huraSubpage:'purchase'},'', '#purchase');
+  }
+  function restorePreviousView(){setView(previousView,{hash:true,scroll:true});}
+  function initSectionNavigation(){
+    document.addEventListener('click',e=>{
+      const categoryLink=e.target.closest('[data-service-category]');
+      if(categoryLink){e.preventDefault();const cat=categoryLink.dataset.serviceCategory;setView('services');applyServiceCategory(cat);return;}
+      const nav=e.target.closest('[data-view-nav]');
+      if(nav){e.preventDefault();setView(nav.dataset.viewNav);return;}
+      const link=e.target.closest('a[href^="#"]');
+      if(!link)return;
+      const id=link.getAttribute('href').slice(1);
+      if(viewIds.includes(id)){e.preventDefault();setView(id);return;}
     });
-    if (state.sort === 'title') list.sort((a,b) => a.title.localeCompare(b.title,'fa'));
-    return list;
+    $('#bottom-services').addEventListener('click',e=>{e.preventDefault();setView('services');});
+    $('#bottom-store').addEventListener('click',e=>{e.preventDefault();setView('store');});
+    $('#category-filters').addEventListener('click',e=>{const btn=e.target.closest('[data-category]');if(btn)applyServiceCategory(btn.dataset.category);});
+    $('#store-category-filters').addEventListener('click',e=>{const btn=e.target.closest('[data-store-category]');if(btn)filterStore(btn.dataset.storeCategory);});
+    setView('home',{hash:false,scroll:false}); filterStore('all');
   }
-  function renderServiceCard(service) {
-    const isFavorite = favorites.has(service.id);
-    const flipped = state.flipped.has(service.id);
-    const docs = service.documents.map(doc => `<li>${escapeHTML(doc)}</li>`).join('');
-    const safeTitle = escapeHTML(service.title);
-    return `<article class="service-card ${flipped?'is-flipped':''}" data-service-id="${service.id}">
-      <div class="service-card-inner">
-        <div class="service-face service-front">
-          <div class="service-card-top"><span class="service-icon" aria-hidden="true">${iconSvg(service.id)}</span><span class="service-tag">${escapeHTML(service.tag)}</span><button class="favorite-button ${isFavorite?'is-favorite':''}" type="button" data-action="favorite" data-id="${service.id}" aria-label="${isFavorite?'حذف از':'افزودن به'} علاقه‌مندی‌ها" aria-pressed="${isFavorite}">${isFavorite?'★':'☆'}</button></div>
-          <h3 class="service-title">${safeTitle}</h3><p class="service-description">${escapeHTML(service.description)}</p>
-          <div class="service-card-meta"><span class="meta-pill">${escapeHTML(service.category)}</span><span class="meta-pill">مدارک و راهنما</span></div>
-          <div class="service-card-actions"><button class="button flip-button" type="button" data-action="flip" data-id="${service.id}">مدارک موردنیاز ↻</button><button class="button button-primary" type="button" data-action="request" data-id="${service.id}">ثبت درخواست ↗</button></div>
-        </div>
-        <div class="service-face service-back">
-          <div class="back-heading"><span class="service-icon" aria-hidden="true">${iconSvg(service.id)}</span><h3>${safeTitle}</h3></div>
-          <div class="docs-label">مدارک پیشنهادی برای شروع</div><ul class="documents-list">${docs}</ul>
-          <div class="service-note">${escapeHTML(service.note)}</div>
-          <div class="service-card-actions"><button class="button flip-button" type="button" data-action="flip" data-id="${service.id}">بازگشت به کارت ↻</button><button class="button button-primary" type="button" data-action="request" data-id="${service.id}">ثبت درخواست ↗</button></div>
-        </div>
-      </div>
-    </article>`;
+  function init(){
+    renderIcons(); initTheme(); initPromoSlider(); initSectionNavigation(); $('#current-year').textContent=new Date().getFullYear().toLocaleString('fa-IR'); updateServices();
+    $('#theme-toggle').addEventListener('click',toggleTheme);
+    searchInput.addEventListener('input',updateServices);
+    $('#reset-search').addEventListener('click',()=>{searchInput.value='';applyServiceCategory('all');});
+    grid.addEventListener('click',e=>{const btn=e.target.closest('button[data-action]');if(!btn)return;const card=btn.closest('.service-card');if(btn.dataset.action==='flip'){if(card)card.classList.toggle('is-flipped');}else if(btn.dataset.action==='request'){const service=services.find(s=>s.id===btn.dataset.id);showRequestPage(service?service.title:'خدمات هورا');}});
+    $$('#store [data-product]').forEach(btn=>btn.addEventListener('click',()=>showPurchasePage(btn.dataset.product,btn.dataset.price,btn.dataset.specs)));
+    $('#request-page-back').addEventListener('click',restorePreviousView);
+    $('#purchase-page-back').addEventListener('click',()=>setView('store'));
+    // Platform links are direct profile links; no form or fake submission is used.
+    setStatus('هورا در خدمت شماست ','success');
   }
-  function renderServices() {
-    const list = getFilteredServices();
-    $('#servicesGrid').innerHTML = list.map(renderServiceCard).join('');
-    $('#servicesGrid').hidden = list.length === 0;
-    $('#emptyState').hidden = list.length !== 0;
-    $('#resultsCount').textContent = `${list.length.toLocaleString('fa-IR')} خدمت از ${services.length.toLocaleString('fa-IR')} خدمت`;
-    $('#favoriteCount').textContent = favorites.size.toLocaleString('fa-IR');
-    $('#favoritesFilter').setAttribute('aria-pressed', String(state.favoritesOnly));
-    $('#clearSearch').hidden = !state.query;
-    $('#allCount').textContent = services.length.toLocaleString('fa-IR');
-    $$('.category-chip').forEach(button => button.classList.toggle('is-active', button.dataset.category === state.category));
-    $$('.category-chip').forEach(button => {
-      if (button.dataset.category !== 'all') {
-        const count = services.filter(s => s.category === button.dataset.category).length;
-        const countEl = button.querySelector('.chip-count'); if (countEl) countEl.textContent = count.toLocaleString('fa-IR');
-      }
-    });
-  }
-  function renderCategories() {
-    const counts = new Map(); services.forEach(s => counts.set(s.category, (counts.get(s.category)||0)+1));
-    $('#categoryChips').innerHTML = `<button class="category-chip ${state.category==='all'?'is-active':''}" data-category="all">همه خدمات <span class="chip-count">${services.length.toLocaleString('fa-IR')}</span></button>` + categories.map(cat => `<button class="category-chip ${state.category===cat.name?'is-active':''}" data-category="${escapeHTML(cat.name)}">${escapeHTML(cat.name)} <span class="chip-count">${(counts.get(cat.name)||0).toLocaleString('fa-IR')}</span></button>`).join('');
-    $('#categoryGrid').innerHTML = categories.map(cat => `<button type="button" class="category-tile" data-category-jump="${escapeHTML(cat.name)}"><span class="category-tile-icon" aria-hidden="true">${iconSvg(cat.name)}</span><span><strong>${escapeHTML(cat.name)}</strong><small>${escapeHTML(cat.description)} · ${(counts.get(cat.name)||0).toLocaleString('fa-IR')} خدمت</small></span></button>`).join('');
-  }
-  function selectCategory(category, shouldScroll=true) {
-    state.category = category; state.favoritesOnly = false; renderCategories(); renderServices();
-    if (shouldScroll) $('#services').scrollIntoView({behavior:'smooth',block:'start'});
-  }
-  function openServiceDialog(service) {
-    const docs = service.documents.map(doc => `<li>${escapeHTML(doc)}</li>`).join('');
-    $('#dialogContent').innerHTML = `<div class="service-card-top"><span class="service-icon" aria-hidden="true">${iconSvg(service.id)}</span><span class="service-tag">${escapeHTML(service.category)}</span></div><h2 id="dialogTitle">${escapeHTML(service.title)}</h2><p>${escapeHTML(service.description)}</p><h3>مدارک پیشنهادی</h3><ul>${docs}</ul><p><strong>نکته:</strong> ${escapeHTML(service.note)} مدارک این صفحه راهنمای عمومی‌اند و فهرست قطعی باید با مرجع ارائه‌دهنده بررسی شود.</p><div class="dialog-actions"><button class="button button-primary" type="button" data-dialog-request="${service.id}">ثبت درخواست در ایتا ↗</button><button class="button button-secondary" type="button" data-dialog-copy="${service.id}">کپی متن درخواست</button></div>`;
-    const dialog = $('#serviceDialog'); if (typeof dialog.showModal === 'function') dialog.showModal(); else showToast('برای جزئیات، کارت خدمت را برگردان.');
-  }
-  function setSlide(index) {
-    const slides = $$('.slide'); if (!slides.length) return;
-    state.slide = (index + slides.length) % slides.length;
-    slides.forEach((slide,i) => { slide.classList.toggle('is-active',i===state.slide); slide.setAttribute('aria-hidden',String(i!==state.slide)); });
-    $$('.slider-dot').forEach((dot,i) => { dot.classList.toggle('is-active',i===state.slide); dot.setAttribute('aria-current',i===state.slide?'true':'false'); });
-  }
-  function closeMobileMenu() { $('#mainNav').classList.remove('is-open'); $('#menuToggle').setAttribute('aria-expanded','false'); $('#menuToggle').setAttribute('aria-label','باز کردن منو'); }
-  function init() {
-    applyTheme(safeRead(STORAGE.theme, 'dark'));
-    renderCategories(); renderServices();
-    $('#themeToggle').addEventListener('click',toggleTheme);
-    $('#requestDialogClose').addEventListener('click',() => $('#requestDialog').close());
-    $('#copyRequestText').addEventListener('click', async () => {
-      const field = $('#requestMessage'); field.focus(); field.select();
-      const copied = await copyText(field.value);
-      showToast(copied ? 'متن درخواست کپی شد؛ حالا آن را در ایتا ارسال کن.' : 'متن انتخاب شد؛ از گزینه کپی گوشی استفاده کن.');
-    });
-    $('#requestDialog').addEventListener('click', event => { if (event.target === $('#requestDialog')) $('#requestDialog').close(); });
-    $('#footerThemeToggle').addEventListener('click',toggleTheme);
-    $('#sliderThemeBtn').addEventListener('click',toggleTheme);
-    $('#menuToggle').addEventListener('click',() => { const open = $('#mainNav').classList.toggle('is-open'); $('#menuToggle').setAttribute('aria-expanded',String(open)); $('#menuToggle').setAttribute('aria-label',open?'بستن منو':'باز کردن منو'); });
-    $$('#mainNav a').forEach(link => link.addEventListener('click',closeMobileMenu));
-    $('#serviceSearch').addEventListener('input',event => { state.query = event.target.value; renderServices(); });
-    $('#clearSearch').addEventListener('click',() => { state.query=''; $('#serviceSearch').value=''; renderServices(); $('#serviceSearch').focus(); });
-    $('#serviceSort').addEventListener('change',event => { state.sort=event.target.value; renderServices(); });
-    $('#categoryChips').addEventListener('click',event => { const button=event.target.closest('[data-category]'); if(button) selectCategory(button.dataset.category,false); });
-    $('#categoryGrid').addEventListener('click',event => { const button=event.target.closest('[data-category-jump]'); if(button) selectCategory(button.dataset.categoryJump); });
-    $('#favoritesFilter').addEventListener('click',() => { state.favoritesOnly=!state.favoritesOnly; if(state.favoritesOnly) state.category='all'; renderCategories(); renderServices(); $('#services').scrollIntoView({behavior:'smooth',block:'start'}); });
-    const reset = () => { state.category='all'; state.query=''; state.favoritesOnly=false; state.sort='default'; $('#serviceSearch').value=''; $('#serviceSort').value='default'; renderCategories(); renderServices(); };
-    $('#resetFilters').addEventListener('click',reset); $('#emptyReset').addEventListener('click',reset);
-    $('#servicesGrid').addEventListener('click',async event => {
-      const button=event.target.closest('[data-action]'); if(!button) return;
-      const service=services.find(s=>s.id===button.dataset.id); if(!service) return;
-      if(button.dataset.action==='flip') { if(state.flipped.has(service.id)) state.flipped.delete(service.id); else state.flipped.add(service.id); renderServices(); }
-      if(button.dataset.action==='favorite') { if(favorites.has(service.id)) favorites.delete(service.id); else favorites.add(service.id); safeWrite(STORAGE.favorites,[...favorites]); renderServices(); showToast(favorites.has(service.id)?'به علاقه‌مندی‌ها اضافه شد.':'از علاقه‌مندی‌ها حذف شد.'); }
-      if(button.dataset.action==='request') startRequest(service);
-      if(button.dataset.action==='details') openServiceDialog(service);
-    });
-    $('#serviceDialog').addEventListener('click',event => { if(event.target === $('#serviceDialog')) $('#serviceDialog').close(); });
-    $('#dialogClose').addEventListener('click',() => $('#serviceDialog').close());
-    $('#dialogContent').addEventListener('click',async event => { const request=event.target.closest('[data-dialog-request]'); const copy=event.target.closest('[data-dialog-copy]'); const id=(request||copy)?.dataset.dialogRequest || (request||copy)?.dataset.dialogCopy; const service=services.find(s=>s.id===id); if(!service) return; if(request) startRequest(service); if(copy) showToast(await copyText(requestText(service))?'متن درخواست کپی شد.':'کپی خودکار در این مرورگر در دسترس نیست.'); });
-    $('#slidePrev').addEventListener('click',()=>setSlide(state.slide-1)); $('#slideNext').addEventListener('click',()=>setSlide(state.slide+1));
-    $('#sliderDots').addEventListener('click',event => { const dot=event.target.closest('[data-slide]'); if(dot) setSlide(Number(dot.dataset.slide)); });
-    let slideTouchStart=null; const slider=$('.slider');
-    slider.addEventListener('touchstart',event=>{slideTouchStart=event.changedTouches[0].clientX;},{passive:true});
-    slider.addEventListener('touchend',event=>{if(slideTouchStart===null)return;const delta=event.changedTouches[0].clientX-slideTouchStart;if(Math.abs(delta)>45)setSlide(state.slide+(delta>0?1:-1));slideTouchStart=null;},{passive:true});
-    $('#backToTop').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
-    window.addEventListener('scroll',()=>$('#backToTop').classList.toggle('is-visible',window.scrollY>500),{passive:true});
-    document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeMobileMenu();}});
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init,{once:true}); else init();
+  try{if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();}
+  catch(error){console.error('Hura initialization failed:',error);setStatus('خطا در اجرای اسکریپت؛ فایل app.js را بررسی کنید','error');}
 })();
