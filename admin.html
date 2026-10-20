@@ -1,1 +1,554 @@
 
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل مدیریت هورا</title>
+  <meta name="theme-color" content="#101827">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Tahoma, Arial, sans-serif;
+      background: #0b1120;
+      color: #f1f5f9;
+      min-height: 100vh;
+    }
+
+    button, input {
+      font: inherit;
+    }
+
+    .container {
+      width: min(100% - 28px, 1000px);
+      margin: 0 auto;
+      padding: 28px 0;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      display: grid;
+      place-items: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #22c55e, #0ea5e9);
+      color: white;
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    h1 {
+      margin: 0 0 7px;
+      font-size: 23px;
+    }
+
+    .muted {
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    .panel {
+      background: #131d30;
+      border: 1px solid #26344b;
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin: 0 0 18px;
+    }
+
+    label {
+      display: block;
+      margin: 14px 0 8px;
+      color: #cbd5e1;
+      font-size: 13px;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      background: #0b1120;
+      color: white;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #38bdf8;
+    }
+
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .primary {
+      background: #0ea5e9;
+      color: white;
+      width: 100%;
+      margin-top: 18px;
+    }
+
+    .secondary {
+      background: #26344b;
+      color: white;
+    }
+
+    .danger {
+      background: #7f1d1d;
+      color: white;
+    }
+
+    .status {
+      display: none;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.9;
+      overflow-wrap: anywhere;
+    }
+
+    .status.error {
+      display: block;
+      color: #fecaca;
+      background: #451a1a;
+    }
+
+    .status.success {
+      display: block;
+      color: #bbf7d0;
+      background: #14532d;
+    }
+
+    .status.info {
+      display: block;
+      color: #bae6fd;
+      background: #082f49;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 14px;
+    }
+
+    .tile {
+      padding: 19px;
+      border: 1px solid #334155;
+      background: #172338;
+      border-radius: 14px;
+    }
+
+    .tile h3 {
+      margin: 0 0 9px;
+      font-size: 16px;
+    }
+
+    .tile p {
+      color: #94a3b8;
+      font-size: 13px;
+      line-height: 1.9;
+      margin: 0;
+    }
+
+    .notice {
+      font-size: 13px;
+      line-height: 2;
+      color: #cbd5e1;
+    }
+
+    a {
+      color: #7dd3fc;
+    }
+
+    footer {
+      text-align: center;
+      color: #64748b;
+      font-size: 12px;
+      padding: 12px 0 24px;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <header class="header">
+      <div class="logo">H</div>
+      <div>
+        <h1>پنل مدیریت هورا</h1>
+        <div class="muted">مدیریت محتوای خدمات و محصولات هورا</div>
+      </div>
+    </header>
+
+    <section id="loginPanel" class="panel">
+      <h2>ورود مدیر</h2>
+      <p class="muted">
+        با ایمیل و رمزی وارد شوید که در بخش Authentication سوپابیس ساخته‌اید.
+      </p>
+
+      <form id="loginForm">
+        <label for="email">ایمیل مدیر</label>
+        <input
+          id="email"
+          type="email"
+          autocomplete="username"
+          placeholder="ایمیل حساب مدیر"
+          required
+        >
+
+        <label for="password">رمز عبور</label>
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          placeholder="رمز عبور حساب مدیر"
+          required
+        >
+
+        <button id="loginButton" class="primary" type="submit">
+          ورود به پنل
+        </button>
+      </form>
+
+      <div id="loginStatus" class="status" role="status"></div>
+    </section>
+
+    <section id="dashboard" class="hidden">
+      <div class="panel">
+        <div class="topbar">
+          <div>
+            <h2>داشبورد مدیریت</h2>
+            <div id="adminEmail" class="muted"></div>
+          </div>
+          <button id="logoutButton" class="danger" type="button">
+            خروج از حساب
+          </button>
+        </div>
+
+        <div id="dashboardStatus" class="status" role="status"></div>
+
+        <div class="grid">
+          <article class="tile">
+            <h3>بنرهای صفحه اصلی</h3>
+            <p>بخش پایگاه داده بنرهای تبلیغاتی.</p>
+          </article>
+
+          <article class="tile">
+            <h3>دسته‌بندی محصولات</h3>
+            <p>بخش دسته‌بندی محصولات فروشگاه.</p>
+          </article>
+
+          <article class="tile">
+            <h3>محصولات</h3>
+            <p>بخش اطلاعات محصولات و قیمت‌ها.</p>
+          </article>
+
+          <article class="tile">
+            <h3>دسته‌بندی خدمات</h3>
+            <p>بخش دسته‌بندی خدمات هورا.</p>
+          </article>
+
+          <article class="tile">
+            <h3>خدمات</h3>
+            <p>بخش اطلاعات و وضعیت خدمات.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>وضعیت اتصال</h2>
+        <p class="notice">
+          اگر ورود موفق باشد، این بخش وضعیت دسترسی مدیر و اتصال به پایگاه داده را نشان می‌دهد.
+        </p>
+        <button id="checkButton" class="secondary" type="button">
+          بررسی اتصال پایگاه داده
+        </button>
+        <div id="connectionStatus" class="status" role="status"></div>
+      </div>
+
+      <div class="panel">
+        <h2>مرحله بعدی</h2>
+        <p class="notice">
+          این نسخه برای آزمایش ورود مدیر و دسترسی به پایگاه داده است.
+          فرم‌های افزودن، ویرایش و حذف بنرها، محصولات و خدمات هنوز باید ساخته شوند.
+        </p>
+      </div>
+    </section>
+
+    <footer>Hura Platform · پنل مدیریت</footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    "use strict";
+
+    // تنظیمات اتصال سوپابیس
+    const SUPABASE_URL =
+      "https://niilwmvjvttxtngdgepa.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable_3Umb3Nca87j52DRQGgql2Q_GzPLRb0f";
+
+    const loginPanel = document.getElementById("loginPanel");
+    const dashboard = document.getElementById("dashboard");
+    const loginForm = document.getElementById("loginForm");
+    const loginButton = document.getElementById("loginButton");
+    const loginStatus = document.getElementById("loginStatus");
+    const dashboardStatus = document.getElementById("dashboardStatus");
+    const connectionStatus = document.getElementById("connectionStatus");
+    const adminEmail = document.getElementById("adminEmail");
+
+    let db = null;
+
+    function showStatus(element, message, type = "info") {
+      element.textContent = message;
+      element.className = "status " + type;
+    }
+
+    function clearStatus(element) {
+      element.textContent = "";
+      element.className = "status";
+    }
+
+    function setLoggedIn(isLoggedIn) {
+      loginPanel.classList.toggle("hidden", isLoggedIn);
+      dashboard.classList.toggle("hidden", !isLoggedIn);
+    }
+
+    function configured() {
+      return (
+        SUPABASE_URL.startsWith("https://") &&
+        SUPABASE_PUBLISHABLE_KEY.startsWith("sb_publishable_")
+      );
+    }
+
+    async function verifyAdmin(user) {
+      const { data, error } = await db
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (error) {
+        throw new Error(
+          "بررسی دسترسی مدیر ناموفق بود: " + error.message
+        );
+      }
+
+      if (!data) {
+        throw new Error(
+          "این حساب دسترسی مدیر ندارد. شناسه حساب را در جدول admin_users بررسی کنید."
+        );
+      }
+
+      return true;
+    }
+
+    async function openDashboard(user) {
+      await verifyAdmin(user);
+      adminEmail.textContent = "حساب واردشده: " + (user.email || "");
+      setLoggedIn(true);
+      showStatus(
+        dashboardStatus,
+        "ورود موفق بود و دسترسی مدیر تأیید شد.",
+        "success"
+      );
+    }
+
+    async function initialize() {
+      if (!configured()) {
+        showStatus(
+          loginStatus,
+          "تنظیمات اتصال سوپابیس کامل نیست.",
+          "error"
+        );
+        return;
+      }
+
+      if (!window.supabase) {
+        showStatus(
+          loginStatus,
+          "کتابخانه سوپابیس بارگذاری نشد. اینترنت یا اتصال CDN را بررسی کنید.",
+          "error"
+        );
+        return;
+      }
+
+      db = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
+
+      try {
+        const { data, error } = await db.auth.getSession();
+
+        if (error) throw error;
+
+        if (data.session?.user) {
+          try {
+            await openDashboard(data.session.user);
+          } catch (error) {
+            setLoggedIn(false);
+            showStatus(loginStatus, error.message, "error");
+          }
+        }
+      } catch (error) {
+        showStatus(
+          loginStatus,
+          "خطا در بررسی نشست: " + error.message,
+          "error"
+        );
+      }
+
+      db.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_OUT" || !session) {
+          setLoggedIn(false);
+          clearStatus(dashboardStatus);
+        }
+      });
+    }
+
+    loginForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      clearStatus(loginStatus);
+
+      if (!db) {
+        showStatus(
+          loginStatus,
+          "اتصال آماده نیست. صفحه را تازه‌سازی کنید.",
+          "error"
+        );
+        return;
+      }
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      loginButton.disabled = true;
+      loginButton.textContent = "در حال ورود...";
+
+      try {
+        const { data, error } = await db.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (error) throw error;
+
+        await openDashboard(data.user);
+      } catch (error) {
+        setLoggedIn(false);
+        showStatus(
+          loginStatus,
+          error.message || "ورود انجام نشد.",
+          "error"
+        );
+      } finally {
+        loginButton.disabled = false;
+        loginButton.textContent = "ورود به پنل";
+      }
+    });
+
+    document.getElementById("checkButton").addEventListener(
+      "click",
+      async () => {
+        clearStatus(connectionStatus);
+
+        try {
+          const { data: userData, error: userError } =
+            await db.auth.getUser();
+
+          if (userError) throw userError;
+          if (!userData.user) {
+            throw new Error("ابتدا وارد حساب مدیر شوید.");
+          }
+
+          await verifyAdmin(userData.user);
+
+          const { error: tableError } = await db
+            .from("services")
+            .select("id")
+            .limit(1);
+
+          if (tableError) throw tableError;
+
+          showStatus(
+            connectionStatus,
+            "اتصال موفق است؛ حساب مدیر و جدول خدمات قابل دسترسی هستند.",
+            "success"
+          );
+        } catch (error) {
+          showStatus(
+            connectionStatus,
+            error.message || "بررسی اتصال ناموفق بود.",
+            "error"
+          );
+        }
+      }
+    );
+
+    document.getElementById("logoutButton").addEventListener(
+      "click",
+      async () => {
+        try {
+          const { error } = await db.auth.signOut();
+          if (error) throw error;
+
+          setLoggedIn(false);
+          clearStatus(dashboardStatus);
+          showStatus(loginStatus, "از حساب خارج شدید.", "success");
+        } catch (error) {
+          showStatus(
+            dashboardStatus,
+            "خروج ناموفق بود: " + error.message,
+            "error"
+          );
+        }
+      }
+    );
+
+    initialize();
+  </script>
+</body>
+</html>
