@@ -1,425 +1,46 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>مدیریت هورا</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1120"><title>مدیریت هورا</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#0b1120;color:#e5edf8;font-family:Tahoma,Arial,sans-serif}
-button,input,textarea,select{font:inherit}
-.wrap{max-width:1100px;margin:auto;padding:20px}
-.panel{background:#131e31;border:1px solid #2a3950;border-radius:15px;padding:18px;margin:15px 0}
-h1{font-size:23px}h2{font-size:18px}
-.small{font-size:12px;color:#aab8cc;line-height:2}
-label{display:block;font-size:13px;margin:12px 0 6px}
-input,textarea,select{width:100%;padding:11px;border:1px solid #34445d;border-radius:9px;background:#0b1120;color:#fff}
-textarea{min-height:75px;resize:vertical}
-button{padding:11px 14px;border:0;border-radius:9px;background:#168bd0;color:white;cursor:pointer;margin:4px 2px}
-button.secondary{background:#334155}
-button.danger{background:#9f3030}
-button:disabled{opacity:.6}
-.tabs{display:flex;gap:6px;flex-wrap:wrap}
-.tab{background:#26354b}
-.tab.active{background:#087fbd}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
-.item{border:1px solid #334155;border-radius:12px;padding:13px;overflow-wrap:anywhere}
-.item img{max-width:100%;max-height:100px;object-fit:contain}
-.row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-#message{white-space:pre-wrap;overflow-wrap:anywhere;padding:12px;border-radius:9px;display:none;margin:12px 0}
-.ok{display:block!important;background:#14532d;color:#dcfce7}
-.err{display:block!important;background:#7f1d1d;color:#fee2e2}
-.hidden{display:none!important}
-@media(max-width:500px){.wrap{padding:12px}.panel{padding:13px}}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <h1>پنل مدیریت هورا</h1>
-  <p class="small">مدیریت بنرها، خدمات، محصولات و دسته‌بندی‌ها</p>
-  <div id="message"></div>
-
-  <section id="login" class="panel">
-    <h2>ورود مدیر</h2>
-    <label for="email">ایمیل</label>
-    <input id="email" type="email" autocomplete="username">
-    <label for="password">رمز عبور</label>
-    <input id="password" type="password" autocomplete="current-password">
-    <button id="loginBtn">ورود</button>
-  </section>
-
-  <section id="app" class="hidden">
-    <div class="panel row">
-      <span id="who" class="small"></span>
-      <button id="logout" class="danger">خروج</button>
-    </div>
-
-    <div class="panel">
-      <h2>بخش مدیریت</h2>
-      <div class="tabs" id="tabs">
-        <button class="tab active" data-table="services">خدمات</button>
-        <button class="tab" data-table="service_categories">دسته‌بندی خدمات</button>
-        <button class="tab" data-table="products">محصولات</button>
-        <button class="tab" data-table="product_categories">دسته‌بندی محصولات</button>
-        <button class="tab" data-table="banners">بنرها</button>
-      </div>
-      <p class="small">پس از ذخیره، اطلاعات در پایگاه داده ثبت می‌شود. نمایش خودکار در سایت به نصب فایل همگام‌سازی بخش دوم نیاز دارد.</p>
-    </div>
-
-    <div class="panel">
-      <h2 id="formTitle">افزودن خدمت</h2>
-      <form id="editor">
-        <input type="hidden" id="recordId">
-
-        <div id="fields"></div>
-
-        <button id="saveBtn" type="submit">ذخیره اطلاعات</button>
-        <button id="cancelBtn" class="secondary" type="button">پاک کردن فرم</button>
-      </form>
-    </div>
-
-    <div class="panel">
-      <div class="row">
-        <h2 id="listTitle">فهرست خدمات</h2>
-        <button id="reload" class="secondary">بارگذاری مجدد</button>
-      </div>
-      <div id="records" class="grid"></div>
-    </div>
-  </section>
-</div>
-
+*{box-sizing:border-box}body{margin:0;background:#0b1120;color:#e5edf8;font-family:Tahoma,Arial,sans-serif}button,input,textarea,select{font:inherit}.wrap{max-width:1100px;margin:auto;padding:20px}.panel{background:#131e31;border:1px solid #2a3950;border-radius:15px;padding:18px;margin:15px 0}h1{font-size:23px}h2{font-size:18px}.small{font-size:12px;color:#aab8cc;line-height:2}label{display:block;font-size:13px;margin:12px 0 6px}input,textarea,select{width:100%;padding:11px;border:1px solid #34445d;border-radius:9px;background:#0b1120;color:#fff}textarea{min-height:75px;resize:vertical}input[type=checkbox]{width:auto}button{padding:11px 14px;border:0;border-radius:9px;background:#168bd0;color:white;cursor:pointer;margin:4px 2px}button.secondary{background:#334155}button.danger{background:#9f3030}button:disabled{opacity:.6}.tabs{display:flex;gap:6px;flex-wrap:wrap}.tab{background:#26354b}.tab.active{background:#087fbd}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.item{border:1px solid #334155;border-radius:12px;padding:13px;overflow-wrap:anywhere}.item img{max-width:100%;max-height:100px;object-fit:contain}.row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}#message{white-space:pre-wrap;overflow-wrap:anywhere;padding:12px;border-radius:9px;display:none;margin:12px 0}.ok{display:block!important;background:#14532d;color:#dcfce7}.err{display:block!important;background:#7f1d1d;color:#fee2e2}.hidden{display:none!important}@media(max-width:500px){.wrap{padding:12px}.panel{padding:13px}}
+</style></head><body><div class="wrap">
+<h1>پنل مدیریت هورا</h1><p class="small">مدیریت بنرها، خدمات، محصولات و دسته‌بندی‌ها. اطلاعات فعال پس از ذخیره در سایت اصلی خوانده می‌شود.</p><div id="message"></div>
+<section id="login" class="panel"><h2>ورود مدیر</h2><label for="email">ایمیل</label><input id="email" type="email" autocomplete="username"><label for="password">رمز عبور</label><input id="password" type="password" autocomplete="current-password"><button id="loginBtn" type="button">ورود</button></section>
+<section id="app" class="hidden"><div class="panel row"><span id="who" class="small"></span><button id="logout" class="danger" type="button">خروج</button></div>
+<div class="panel"><h2>بخش مدیریت</h2><div class="tabs" id="tabs"><button class="tab active" data-table="services" type="button">خدمات</button><button class="tab" data-table="service_categories" type="button">دسته‌بندی خدمات</button><button class="tab" data-table="products" type="button">محصولات</button><button class="tab" data-table="product_categories" type="button">دسته‌بندی محصولات</button><button class="tab" data-table="banners" type="button">بنرها</button></div><p class="small">برای نمایش در سایت، گزینه «فعال باشد» یا «در سایت نمایش داده شود» را روشن نگه دار. برای تصاویر از لینک مستقیم HTTPS استفاده کن.</p></div>
+<div class="panel"><h2 id="formTitle">افزودن خدمت</h2><form id="editor"><input type="hidden" id="recordId"><div id="fields"></div><button id="saveBtn" type="submit">ذخیره اطلاعات</button><button id="cancelBtn" class="secondary" type="button">پاک کردن فرم</button></form></div>
+<div class="panel"><div class="row"><h2 id="listTitle">فهرست خدمات</h2><button id="reload" class="secondary" type="button">بارگذاری مجدد</button></div><div id="records" class="grid"></div></div></section></div>
 <script>
-"use strict";
-
-const SUPABASE_URL = "https://niilwmvjvttxtngdgepa.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_3Umb3Nca87j52DRQGgql2Q_GzPLRb0f";
-
-const db = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
-
-const $ = id => document.getElementById(id);
-let currentTable = "services";
-let rows = [];
-let categories = {service_categories:[],product_categories:[]};
-
-const config = {
-  services: {
-    title:"خدمات",
-    fields:[
-      ["name","نام خدمت","text",true],
-      ["description","توضیحات","textarea",false],
-      ["category_id","دسته‌بندی","serviceCategory",false],
-      ["icon","نام آیکون انگلیسی","text",false],
-      ["sort_order","ترتیب نمایش","number",false],
-      ["is_active","فعال باشد","check",false]
-    ]
-  },
-  service_categories: {
-    title:"دسته‌بندی خدمات",
-    fields:[
-      ["name","نام دسته‌بندی","text",true],
-      ["slug","شناسه انگلیسی، مانند admin","text",true],
-      ["icon","نام آیکون انگلیسی","text",false],
-      ["sort_order","ترتیب نمایش","number",false],
-      ["is_active","فعال باشد","check",false]
-    ]
-  },
-  products: {
-    title:"محصولات",
-    fields:[
-      ["name","نام محصول","text",true],
-      ["model","مدل محصول","text",false],
-      ["description","توضیحات","textarea",false],
-      ["category_id","دسته‌بندی","productCategory",false],
-      ["image_url","لینک تصویر","url",false],
-      ["price_label","قیمت نمایشی، مانند تماس بگیرید","text",false],
-      ["price","قیمت عددی، اختیاری","number",false],
-      ["specifications","مشخصات، با جداکننده ویرگول","text",false],
-      ["is_available","موجود است","check",false],
-      ["is_active","در سایت نمایش داده شود","check",false],
-      ["sort_order","ترتیب نمایش","number",false]
-    ]
-  },
-  product_categories: {
-    title:"دسته‌بندی محصولات",
-    fields:[
-      ["name","نام دسته‌بندی","text",true],
-      ["slug","شناسه انگلیسی، مانند pos-new","text",true],
-      ["sort_order","ترتیب نمایش","number",false],
-      ["is_active","فعال باشد","check",false]
-    ]
-  },
-  banners: {
-    title:"بنرها",
-    fields:[
-      ["title","عنوان بنر","text",true],
-      ["description","توضیحات کوتاه","textarea",false],
-      ["image_url","لینک تصویر","url",false],
-      ["button_text","متن دکمه","text",false],
-      ["button_url","لینک دکمه","url",false],
-      ["sort_order","ترتیب نمایش","number",false],
-      ["is_active","در سایت نمایش داده شود","check",false]
-    ]
-  }
+'use strict';
+const SUPABASE_URL='https://niilwmvjvttxtngdgepa.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_3Umb3Nca87j52DRQGgql2Q_GzPLRb0f';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id);let currentTable='services',rows=[];let categories={service_categories:[],product_categories:[]};
+const config={
+ services:{title:'خدمات',fields:[['name','نام خدمت','text',true],['description','توضیحات','textarea',false],['category_id','دسته‌بندی','serviceCategory',false],['icon','نام آیکون انگلیسی','text',false],['sort_order','ترتیب نمایش','number',false],['is_active','فعال باشد','check',false]]},
+ service_categories:{title:'دسته‌بندی خدمات',fields:[['name','نام دسته‌بندی','text',true],['slug','شناسه انگلیسی، مانند admin','text',true],['icon','نام آیکون انگلیسی','text',false],['sort_order','ترتیب نمایش','number',false],['is_active','فعال باشد','check',false]]},
+ products:{title:'محصولات',fields:[['name','نام محصول','text',true],['model','مدل محصول','text',false],['description','توضیحات','textarea',false],['category_id','دسته‌بندی','productCategory',false],['image_url','لینک تصویر HTTPS','url',false],['price_label','قیمت نمایشی، مانند تماس بگیرید','text',false],['price','قیمت عددی، اختیاری','number',false],['specifications','مشخصات، با جداکننده ویرگول','text',false],['is_available','موجود است','check',false],['is_active','در سایت نمایش داده شود','check',false],['sort_order','ترتیب نمایش','number',false]]},
+ product_categories:{title:'دسته‌بندی محصولات',fields:[['name','نام دسته‌بندی','text',true],['slug','شناسه انگلیسی، مانند pos-new','text',true],['sort_order','ترتیب نمایش','number',false],['is_active','فعال باشد','check',false]]},
+ banners:{title:'بنرها',fields:[['title','عنوان بنر','text',true],['description','توضیحات کوتاه','textarea',false],['image_url','لینک تصویر HTTPS','url',false],['button_text','متن دکمه','text',false],['button_url','لینک دکمه','url',false],['sort_order','ترتیب نمایش','number',false],['is_active','در سایت نمایش داده شود','check',false]]}
 };
-
-function message(text, ok=false) {
-  $("message").textContent = text;
-  $("message").className = ok ? "ok" : "err";
-}
-
-function clearMessage() {
-  $("message").style.display = "none";
-  $("message").className = "";
-}
-
-function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[c]));
-}
-
-async function requireAdmin(user) {
-  const {data,error} = await db
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id",user.id)
-    .maybeSingle();
-
-  if(error) throw error;
-  if(!data) throw new Error("این حساب دسترسی مدیر ندارد.");
-}
-
-async function startApp(user) {
-  await requireAdmin(user);
-  $("login").classList.add("hidden");
-  $("app").classList.remove("hidden");
-  $("who").textContent = "مدیر: " + (user.email || "");
-  await loadCategories();
-  await loadRecords();
-}
-
-async function loadCategories() {
-  for(const table of ["service_categories","product_categories"]) {
-    const {data,error} = await db.from(table)
-      .select("id,name,slug,is_active")
-      .order("sort_order",{ascending:true});
-
-    if(error) throw error;
-    categories[table] = data || [];
-  }
-}
-
-function fieldHtml(field, value) {
-  const [key,label,type,required] = field;
-  const req = required ? "required" : "";
-  const safe = escapeHtml(value ?? "");
-
-  if(type === "check") {
-    return `<label><input style="width:auto" type="checkbox" id="f_${key}"
-      ${value === undefined ? "checked" : value ? "checked" : ""}>
-      ${label}</label>`;
-  }
-
-  if(type === "serviceCategory" || type === "productCategory") {
-    const table = type === "serviceCategory" ? "service_categories" : "product_categories";
-    const opts = categories[table].map(c =>
-      `<option value="${escapeHtml(c.id)}" ${value===c.id?"selected":""}>${escapeHtml(c.name)}</option>`
-    ).join("");
-
-    return `<label>${label}</label><select id="f_${key}">
-      <option value="">بدون دسته‌بندی</option>${opts}</select>`;
-  }
-
-  if(type === "textarea") {
-    return `<label for="f_${key}">${label}</label>
-      <textarea id="f_${key}" ${req}>${safe}</textarea>`;
-  }
-
-  return `<label for="f_${key}">${label}</label>
-    <input id="f_${key}" type="${type}" value="${safe}" ${req}
-    ${type==="number" ? 'step="any"' : ""}>`;
-}
-
-function renderForm(record={}) {
-  $("fields").innerHTML = config[currentTable].fields
-    .map(f=>fieldHtml(f,record[f[0]])).join("");
-
-  $("recordId").value = record.id || "";
-  $("formTitle").textContent = (record.id ? "ویرایش " : "افزودن ") + config[currentTable].title;
-}
-
-function valueFromForm(field) {
-  const [key,,type] = field;
-  const el = $("f_"+key);
-  if(type === "check") return el.checked;
-  if(type === "number") return el.value === "" ? null : Number(el.value);
-  if(type === "specifications") {
-    return el.value.split(",").map(s=>s.trim()).filter(Boolean);
-  }
-  return el.value.trim() || null;
-}
-
-async function saveRecord(event) {
-  event.preventDefault();
-  clearMessage();
-  const data = {};
-
-  for(const field of config[currentTable].fields) {
-    data[field[0]] = valueFromForm(field);
-  }
-
-  if(currentTable === "products") {
-    const specs = data.specifications;
-    data.specifications = specs ? {items:specs} : {};
-    if(data.price === null) delete data.price;
-  }
-
-  const id = $("recordId").value;
-  $("saveBtn").disabled = true;
-
-  try {
-    let result;
-    if(id) {
-      result = await db.from(currentTable).update(data).eq("id",id);
-    } else {
-      result = await db.from(currentTable).insert(data);
-    }
-
-    if(result.error) throw result.error;
-
-    message("اطلاعات با موفقیت ذخیره شد.",true);
-    renderForm();
-    await loadCategories();
-    await loadRecords();
-  } catch(error) {
-    message("ذخیره انجام نشد:\n" + error.message);
-  } finally {
-    $("saveBtn").disabled = false;
-  }
-}
-
-async function loadRecords() {
-  const {data,error} = await db.from(currentTable).select("*")
-    .order("sort_order",{ascending:true});
-
-  if(error) throw error;
-  rows = data || [];
-
-  $("listTitle").textContent = "فهرست " + config[currentTable].title;
-  $("records").innerHTML = rows.map(record => {
-    const name = record.name || record.title || "(بدون عنوان)";
-    const status = record.is_active ? "فعال" : "غیرفعال";
-    const image = record.image_url
-      ? `<img src="${escapeHtml(record.image_url)}" alt="">` : "";
-
-    return `<article class="item">
-      ${image}
-      <strong>${escapeHtml(name)}</strong>
-      <p class="small">${escapeHtml(record.description || record.slug || "")}</p>
-      <p class="small">وضعیت: ${status}</p>
-      <button data-edit="${escapeHtml(record.id)}">ویرایش</button>
-      <button class="secondary" data-toggle="${escapeHtml(record.id)}">
-        ${record.is_active ? "غیرفعال کردن" : "فعال کردن"}
-      </button>
-      <button class="danger" data-delete="${escapeHtml(record.id)}">حذف</button>
-    </article>`;
-  }).join("") || '<p class="small">هنوز موردی ثبت نشده است.</p>';
-}
-
-$("loginBtn").addEventListener("click",async()=>{
-  clearMessage();
-  try {
-    const {data,error} = await db.auth.signInWithPassword({
-      email:$("email").value.trim(),
-      password:$("password").value
-    });
-    if(error) throw error;
-    await startApp(data.user);
-  } catch(error) {
-    message("ورود ناموفق بود:\n"+error.message);
-  }
-});
-
-$("logout").addEventListener("click",async()=>{
-  await db.auth.signOut();
-  $("app").classList.add("hidden");
-  $("login").classList.remove("hidden");
-});
-
-$("tabs").addEventListener("click",async event=>{
-  const btn = event.target.closest("[data-table]");
-  if(!btn) return;
-  currentTable = btn.dataset.table;
-  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b===btn));
-
-  try {
-    await loadCategories();
-    renderForm();
-    await loadRecords();
-    clearMessage();
-  } catch(error) {
-    message("بارگذاری انجام نشد:\n"+error.message);
-  }
-});
-
-$("editor").addEventListener("submit",saveRecord);
-$("cancelBtn").addEventListener("click",()=>renderForm());
-$("reload").addEventListener("click",async()=>{
-  try { await loadCategories(); await loadRecords(); message("فهرست به‌روز شد.",true); }
-  catch(error) { message(error.message); }
-});
-
-$("records").addEventListener("click",async event=>{
-  const edit = event.target.closest("[data-edit]");
-  const toggle = event.target.closest("[data-toggle]");
-  const del = event.target.closest("[data-delete]");
-
-  try {
-    if(edit) {
-      const record = rows.find(r=>r.id===edit.dataset.edit);
-      if(record) renderForm(record);
-    }
-
-    if(toggle) {
-      const record = rows.find(r=>r.id===toggle.dataset.toggle);
-      if(!record) return;
-      const {error} = await db.from(currentTable)
-        .update({is_active:!record.is_active}).eq("id",record.id);
-      if(error) throw error;
-      await loadRecords();
-      message("وضعیت به‌روز شد.",true);
-    }
-
-    if(del) {
-      if(!confirm("این مورد برای همیشه حذف شود؟")) return;
-      const {error} = await db.from(currentTable).delete().eq("id",del.dataset.delete);
-      if(error) throw error;
-      renderForm();
-      await loadCategories();
-      await loadRecords();
-      message("مورد حذف شد.",true);
-    }
-  } catch(error) {
-    message("عملیات انجام نشد:\n"+error.message);
-  }
-});
-
-(async()=>{
-  try {
-    const {data,error} = await db.auth.getSession();
-    if(error) throw error;
-    if(data.session?.user) await startApp(data.session.user);
-    else renderForm();
-  } catch(error) {
-    message("خطا در آماده‌سازی پنل:\n"+error.message);
-  }
-})();
-</script>
-</body>
-      </html>
-  
+function message(text,ok=false){$('message').textContent=text;$('message').className=ok?'ok':'err';}
+function clearMessage(){$('message').style.display='none';$('message').className='';}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+async function requireAdmin(user){const {data,error}=await db.from('admin_users').select('user_id').eq('user_id',user.id).maybeSingle();if(error)throw error;if(!data)throw new Error('این حساب دسترسی مدیر ندارد.');}
+async function startApp(user){await requireAdmin(user);$('login').classList.add('hidden');$('app').classList.remove('hidden');$('who').textContent='مدیر: '+(user.email||'');await loadCategories();renderForm();await loadRecords();}
+async function loadCategories(){for(const table of ['service_categories','product_categories']){const {data,error}=await db.from(table).select('id,name,slug,is_active').order('sort_order',{ascending:true});if(error)throw error;categories[table]=data||[];}}
+function fieldHtml(field,value){const [key,label,type,required]=field,req=required?'required':'';const safe=esc(value??'');if(type==='check')return `<label><input style="width:auto" type="checkbox" id="f_${key}" ${value===undefined||value===null?'checked':value?'checked':''}> ${label}</label>`;if(type==='serviceCategory'||type==='productCategory'){const table=type==='serviceCategory'?'service_categories':'product_categories';const opts=categories[table].map(c=>`<option value="${esc(c.id)}" ${String(value)===String(c.id)?'selected':''}>${esc(c.name)}</option>`).join('');return `<label for="f_${key}">${label}</label><select id="f_${key}"><option value="">بدون دسته‌بندی</option>${opts}</select>`;}if(type==='textarea')return `<label for="f_${key}">${label}</label><textarea id="f_${key}" ${req}>${safe}</textarea>`;return `<label for="f_${key}">${label}</label><input id="f_${key}" type="${type}" value="${safe}" ${req} ${type==='number'?'step="any"':''}>`;}
+function renderForm(record={}){$('fields').innerHTML=config[currentTable].fields.map(f=>fieldHtml(f,record[f[0]])).join('');$('recordId').value=record.id||'';$('formTitle').textContent=(record.id?'ویرایش ':'افزودن ')+config[currentTable].title;}
+function valueFromForm(field){const [key,,type]=field,el=$('f_'+key);if(type==='check')return el.checked;if(type==='number')return el.value===''?null:Number(el.value);if(key==='specifications')return el.value.split(',').map(s=>s.trim()).filter(Boolean);return el.value.trim()||null;}
+async function saveRecord(event){event.preventDefault();clearMessage();const data={};for(const field of config[currentTable].fields)data[field[0]]=valueFromForm(field);if(currentTable==='products'){data.specifications=data.specifications?.length?{items:data.specifications}:{};if(data.price===null)delete data.price;}const id=$('recordId').value;$('saveBtn').disabled=true;try{let result=id?await db.from(currentTable).update(data).eq('id',id):await db.from(currentTable).insert(data);if(result.error)throw result.error;message('اطلاعات با موفقیت ذخیره شد.',true);renderForm();await loadCategories();await loadRecords();}catch(error){message('ذخیره انجام نشد:\n'+error.message);}finally{$('saveBtn').disabled=false;}}
+async function loadRecords(){const {data,error}=await db.from(currentTable).select('*').order('sort_order',{ascending:true});if(error)throw error;rows=data||[];$('listTitle').textContent='فهرست '+config[currentTable].title;$('records').innerHTML=rows.map(r=>{const name=r.name||r.title||'(بدون عنوان)',active=r.is_active!==false;const image=r.image_url?`<img src="${esc(r.image_url)}" alt="" loading="lazy">`:'';return `<article class="item">${image}<strong>${esc(name)}</strong><p class="small">${esc(r.description||r.slug||'')}</p><p class="small">وضعیت: ${active?'فعال':'غیرفعال'}</p><button type="button" data-edit="${esc(r.id)}">ویرایش</button><button type="button" class="secondary" data-toggle="${esc(r.id)}">${active?'غیرفعال کردن':'فعال کردن'}</button><button type="button" class="danger" data-delete="${esc(r.id)}">حذف</button></article>`;}).join('')||'<p class="small">هنوز موردی ثبت نشده است.</p>';}
+$('loginBtn').addEventListener('click',async()=>{clearMessage();try{const {data,error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error)throw error;await startApp(data.user);}catch(error){message('ورود ناموفق بود:\n'+error.message);}});
+$('logout').addEventListener('click',async()=>{await db.auth.signOut();$('app').classList.add('hidden');$('login').classList.remove('hidden');});
+$('tabs').addEventListener('click',async e=>{const btn=e.target.closest('[data-table]');if(!btn)return;currentTable=btn.dataset.table;document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b===btn));try{await loadCategories();renderForm();await loadRecords();clearMessage();}catch(error){message('بارگذاری انجام نشد:\n'+error.message);}});
+$('editor').addEventListener('submit',saveRecord);$('cancelBtn').addEventListener('click',()=>renderForm());$('reload').addEventListener('click',async()=>{try{await loadCategories();await loadRecords();message('فهرست به‌روز شد.',true);}catch(error){message(error.message);}});
+$('records').addEventListener('click',async e=>{const edit=e.target.closest('[data-edit]'),toggle=e.target.closest('[data-toggle]'),del=e.target.closest('[data-delete]');try{if(edit){const r=rows.find(x=>String(x.id)===edit.dataset.edit);if(r)renderForm(r);}if(toggle){const r=rows.find(x=>String(x.id)===toggle.dataset.toggle);if(!r)return;const {error}=await db.from(currentTable).update({is_active:r.is_active===false}).eq('id',r.id);if(error)throw error;await loadRecords();message('وضعیت به‌روز شد.',true);}if(del){if(!confirm('این مورد برای همیشه حذف شود؟'))return;const {error}=await db.from(currentTable).delete().eq('id',del.dataset.delete);if(error)throw error;renderForm();await loadCategories();await loadRecords();message('مورد حذف شد.',true);}}catch(error){message('عملیات انجام نشد:\n'+error.message);}});
+(async()=>{try{const {data,error}=await db.auth.getSession();if(error)throw error;if(data.session?.user)await startApp(data.session.user);else renderForm();}catch(error){message('خطا در آماده‌سازی پنل:\n'+error.message);}})();
+</script></body></html>
