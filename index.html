@@ -1,173 +1,46 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0b1220">
-  <meta name="description" content="هورا؛ خدمات آنلاین و حضوری، خدمات کسب‌وکارها، امور اداری و خدمات دیجیتال در قدمگاه رضوی">
-  <title>هورا | خدمات هوشمند، ساده و سریع</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config={theme:{extend:{fontFamily:{sans:['Vazirmatn','sans-serif']},colors:{hura:{ink:'#0b1220',blue:'#2563eb',cyan:'#22d3ee',mint:'#34d399'}}}}}</script>
-  <link rel="stylesheet" href="./style.css?v=5">
-</head>
-<body class="font-sans">
-  <div class="announcement"><span class="announcement-dot"></span> خدمات و راهکارهای هورا، ساده و در دسترس</div>
-  <header class="site-header">
-    <div class="container nav-wrap">
-      <a class="brand" href="#home" aria-label="هورا، صفحه اصلی">
-        <span class="brand-mark"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 34V14h7v7h18v-7h7v20h-7v-7H15v7z" fill="currentColor"/><circle cx="24" cy="8" r="4" fill="#22d3ee"/></svg></span>
-        <span class="brand-copy"><strong>هورا</strong><small>خدمات هوشمند</small></span>
-      </a>
-      <nav class="desktop-nav pinned-tabs" aria-label="بخش‌های اصلی هورا">
-        <a class="nav-link active" data-view-nav="home" href="#home"><span data-icon="house"></span> خانه</a>
-        <a class="nav-link" data-view-nav="services" href="#services"><span data-icon="layers-3"></span> خدمات</a>
-        <a class="nav-link" data-view-nav="store" href="#store"><span data-icon="store"></span> فروشگاه</a>
-        <a class="nav-link" data-view-nav="how" href="#how"><span data-icon="route"></span> راهنمای استفاده</a>
-        <a class="nav-link" data-view-nav="about" href="#about"><span data-icon="heart-handshake"></span> درباره هورا</a>
-      </nav>
-      <div class="nav-actions"><button id="theme-toggle" class="icon-btn" type="button" aria-label="تغییر پوسته" title="تغییر پوسته"><span data-icon="moon"></span></button><a href="#services" class="btn btn-primary nav-cta">مشاهده خدمات <span data-icon="arrow-left"></span></a></div>
-    </div>
-  </header>
-
-  <section id="promo-slider" class="promo-slider" aria-label="پیشنهادهای هورا">
-    <div class="container promo-slider-inner">
-      <button class="slider-arrow" id="promo-prev" type="button" aria-label="اسلاید قبلی"><span data-icon="chevron-left"></span></button>
-      <div class="promo-slides" id="promo-slides" aria-live="polite">
-        <article class="promo-slide active" data-slide="0"><div class="promo-slide-icon"><span data-icon="shield-check"></span></div><div class="promo-slide-copy"><small>خدمات بیمه</small><strong>صدور و تمدید انواع بیمه</strong><span>نوع بیمه‌ات را انتخاب کن و استعلام بگیر.</span></div><div class="promo-art promo-art-insurance" aria-hidden="true"><svg viewBox="0 0 240 140"><circle cx="168" cy="66" r="55" fill="#ffffff" opacity=".16"/><circle cx="168" cy="66" r="40" fill="#ffffff" opacity=".18"/><path d="M132 35h46l12 12v48h-58z" fill="#fff" opacity=".95"/><path d="M178 35v14h12" fill="#dbeafe"/><path d="m143 66 9 9 17-20" fill="none" stroke="#0f9f8f" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M108 104h89" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".6"/></svg></div><a class="promo-slide-link" href="#services">مشاهده خدمات <span data-icon="arrow-left"></span></a></article>
-        <article class="promo-slide" data-slide="1"><div class="promo-slide-icon"><span data-icon="credit-card"></span></div><div class="promo-slide-copy"><small>فروشگاه هورا</small><strong>کارتخوان و تجهیزات فروشگاهی</strong><span>مدل‌ها، مشخصات و قیمت نمونه را مقایسه کن.</span></div><div class="promo-art promo-art-shop" aria-hidden="true"><svg viewBox="0 0 240 140"><circle cx="166" cy="68" r="58" fill="#ffffff" opacity=".14"/><rect x="133" y="27" width="63" height="91" rx="13" fill="#fff" opacity=".96"/><rect x="141" y="38" width="47" height="53" rx="6" fill="#dbeafe"/><path d="M149 50h31M149 60h31M149 70h21" stroke="#2563eb" stroke-width="4" stroke-linecap="round"/><circle cx="165" cy="103" r="5" fill="#0891b2"/><path d="M103 102h19l7-25h-34l8 25Z" fill="#fff" opacity=".8"/><path d="M95 77h38l-5-15h-28z" fill="#fef3c7"/></svg></div><a class="promo-slide-link" href="#store">رفتن به فروشگاه <span data-icon="arrow-left"></span></a></article>
-        <article class="promo-slide" data-slide="2"><div class="promo-slide-icon"><span data-icon="files"></span></div><div class="promo-slide-copy"><small>خدمات روزمره</small><strong>کارهای اداری و دیجیتال، ساده‌تر</strong><span>خدمتت را پیدا کن و مستقیم پیام بده.</span></div><div class="promo-art promo-art-digital" aria-hidden="true"><svg viewBox="0 0 240 140"><circle cx="165" cy="69" r="57" fill="#ffffff" opacity=".14"/><rect x="130" y="28" width="68" height="86" rx="10" fill="#fff" opacity=".95"/><rect x="141" y="40" width="46" height="6" rx="3" fill="#bfdbfe"/><rect x="141" y="54" width="35" height="5" rx="2.5" fill="#93c5fd"/><rect x="141" y="66" width="43" height="5" rx="2.5" fill="#93c5fd"/><rect x="141" y="78" width="27" height="5" rx="2.5" fill="#93c5fd"/><circle cx="122" cy="91" r="18" fill="#22d3ee"/><path d="m113 91 6 6 12-14" fill="none" stroke="#075985" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div><a class="promo-slide-link" href="#services">شروع از اینجا <span data-icon="arrow-left"></span></a></article>
-      </div>
-      <button class="slider-arrow" id="promo-next" type="button" aria-label="اسلاید بعدی"><span data-icon="chevron-left"></span></button>
-      <div class="promo-dots" id="promo-dots" aria-label="انتخاب اسلاید"><button class="promo-dot active" type="button" data-slide-to="0" aria-label="اسلاید ۱"></button><button class="promo-dot" type="button" data-slide-to="1" aria-label="اسلاید ۲"></button><button class="promo-dot" type="button" data-slide-to="2" aria-label="اسلاید ۳"></button></div>
-    </div>
-  </section>
-
-  <main>
-    <section id="home" class="hero-section" data-view="home">
-      <div class="hero-glow glow-one"></div><div class="hero-glow glow-two"></div>
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <div class="eyebrow"><span data-icon="sparkles"></span> راه ساده‌تر برای انجام کارها</div>
-          <h1>کارهای روزمره‌ات،<br><span class="gradient-text">با هورا ساده‌تره.</span></h1>
-          <p class="hero-description">از خدمات اداری و آنلاین تا راهکارهای دیجیتال کسب‌وکارها؛ خدمات موردنیازت را پیدا کن و از راه پیام‌رسان دلخواهت با هورا در ارتباط باش.</p>
-          <div class="hero-actions"><a href="#services" class="btn btn-primary btn-large">شروع و مشاهده خدمات <span data-icon="arrow-left"></span></a><a href="#how" class="btn btn-glass btn-large"><span data-icon="circle-play"></span> روش کار هورا</a></div>
-          <div class="hero-trust"><div class="trust-icon"><span data-icon="check-circle-2"></span></div><div><strong>خدمات حضوری و آنلاین</strong><small>برای کارهای روزمره و کسب‌وکارها</small></div></div>
-        </div>
-        <div class="hero-visual" aria-label="نمای گرافیکی خدمات هورا">
-          <div class="visual-orbit orbit-a"></div><div class="visual-orbit orbit-b"></div>
-          <div class="visual-core"><div class="core-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 34V14h7v7h18v-7h7v20h-7v-7H15v7z" fill="currentColor"/><circle cx="24" cy="8" r="4" fill="#22d3ee"/></svg></div><strong>هورا</strong><small>همه‌چیز، ساده‌تر</small></div>
-          <div class="float-card float-card-top"><span class="float-icon blue"><span data-icon="file-check-2"></span></span><div><strong>خدمات اداری</strong><small>راهنمایی و پیگیری</small></div><span class="float-check" data-icon="check-circle-2"></span></div>
-          <div class="float-card float-card-left"><span class="float-icon cyan"><span data-icon="store"></span></span><div><strong>ویژه کسب‌وکارها</strong><small>راهکارهای دیجیتال</small></div></div>
-          <div class="float-card float-card-bottom"><span class="float-icon mint"><span data-icon="zap"></span></span><div><strong>سریع و آسان</strong><small>ثبت درخواست در چند قدم</small></div></div>
-          <div class="visual-spark spark-a">✦</div><div class="visual-spark spark-b">✧</div>
-        </div>
-      </div>
-      <div class="container hero-bottom"><div class="hero-bottom-line"></div><span>یک مسیر روشن برای رسیدن به خدمات موردنیاز</span><div class="hero-bottom-line"></div></div>
-    </section>
-
-    <section class="quick-section" data-view="home" aria-label="دسترسی سریع">
-      <div class="container quick-grid">
-        <a href="#services" data-service-category="admin" class="quick-item"><span class="quick-icon q-blue" data-icon="files"></span><span><strong>خدمات اداری</strong><small>امور و درخواست‌ها</small></span><span class="quick-arrow" data-icon="chevron-left"></span></a>
-        <a href="#services" data-service-category="vehicle" class="quick-item"><span class="quick-icon q-purple" data-icon="car-front"></span><span><strong>خدمات خودرو</strong><small>راهنمایی مراحل</small></span><span class="quick-arrow" data-icon="chevron-left"></span></a>
-        <a href="#services" data-service-category="business" class="quick-item"><span class="quick-icon q-green" data-icon="credit-card"></span><span><strong>کارتخوان و پرداخت</strong><small>فروش و پشتیبانی</small></span><span class="quick-arrow" data-icon="chevron-left"></span></a>
-        <a href="#services" data-service-category="business" class="quick-item"><span class="quick-icon q-orange" data-icon="store"></span><span><strong>خدمات کسب‌وکار</strong><small>ابزارهای رشد</small></span><span class="quick-arrow" data-icon="chevron-left"></span></a>
-      </div>
-    </section>
-
-    <section id="services" class="section services-section" data-view="services">
-      <div class="container">
-        <div class="section-switch" aria-label="انتخاب بخش"><a class="section-switch-btn active" href="#services"><span data-icon="layers-3"></span> خدمات</a><a class="section-switch-btn" href="#store"><span data-icon="store"></span> فروشگاه</a></div><div class="section-heading"><div><div class="eyebrow"><span data-icon="layers-3"></span> کاتالوگ خدمات</div><h2 id="services-heading">چه کاری از دست هورا برمیاد؟</h2><p id="services-subheading">خدمت موردنظرت را جست‌وجو کن یا از دسته‌بندی‌ها شروع کن.</p></div><div class="service-count"><strong id="visible-count">۲۱</strong><span>خدمت قابل مشاهده</span></div></div>
-        <div class="service-toolbar"><label class="search-box"><span data-icon="search"></span><input id="service-search" type="search" placeholder="مثلاً بیمه، خط رند، کارتخوان، چاپ..." autocomplete="off" aria-label="جست‌وجوی خدمات"><kbd>جست‌وجو</kbd></label><div id="category-filters" class="category-filters" aria-label="فیلتر دسته‌بندی"><button class="filter-chip active" type="button" data-category="all">همه خدمات</button><button class="filter-chip" type="button" data-category="admin">اداری و آنلاین</button><button class="filter-chip" type="button" data-category="vehicle">خودرو</button><button class="filter-chip" type="button" data-category="business">کسب‌وکار</button><button class="filter-chip" type="button" data-category="digital">دیجیتال و چاپ</button><button class="filter-chip" type="button" data-category="insurance">بیمه</button></div></div>
-        <div id="services-grid" class="services-grid" aria-live="polite"></div>
-        <div id="empty-state" class="empty-state" hidden><span data-icon="search-x"></span><strong>موردی پیدا نشد</strong><p>عبارت جست‌وجو یا دسته‌بندی را تغییر بده.</p><button id="reset-search" class="btn btn-outline" type="button">نمایش همه خدمات</button></div>
-        <p class="service-note"><span data-icon="info"></span> مدارک و شرایط بعضی خدمات با توجه به نوع درخواست و مقررات مربوط تغییر می‌کند؛ فهرست داخل هر کارت، راهنمای اولیه است و پیش از اقدام نهایی بررسی می‌شود.</p>
-      </div>
-    </section>
-
-
-    <section id="store" class="section store-section" data-view="store">
-      <div class="container">
-        <div class="section-heading"><div><div class="eyebrow"><span data-icon="store"></span> فروشگاه هورا</div><h2>محصولات و تجهیزات</h2><p>محصول را انتخاب کن و برای موجودی، قیمت روز و شرایط خرید مستقیم به پیام خصوصی هورا برو.</p></div></div>
-        <div class="store-category-tabs" id="store-category-filters" aria-label="دسته‌بندی محصولات">
-          <button type="button" class="store-category-chip active" data-store-category="all">همه محصولات</button>
-          <button type="button" class="store-category-chip" data-store-category="pos-new">کارتخوان نو</button>
-          <button type="button" class="store-category-chip" data-store-category="pos-used">کارتخوان کارکرده</button>
-          <button type="button" class="store-category-chip" data-store-category="sim">سیم‌کارت و خط رند</button>
-          <button type="button" class="store-category-chip" data-store-category="modem">مودم</button>
-          <button type="button" class="store-category-chip" data-store-category="other">تجهیزات دیگر</button>
-        </div>
-        <div class="store-grid">
-          <article class="store-card" data-product-category="pos-used"><div class="store-product-icon product-blue"><span data-icon="credit-card"></span></div><span class="store-badge">سیار</span><h3>کارتخوان PAX D210</h3><p>نمایشگر رنگی ۲.۸ اینچ، چاپگر حرارتی، ارتباط سیم‌کارتی GPRS؛ مناسب فروشگاه و کسب‌وکارهای سیار.</p><div class="store-specs"><span>باتری ۳۰۰۰ mAh</span><span>چاپگر داخلی</span><span>مدل کارکرده/استوک</span></div><div class="store-price">حدود ۸٬۰۰۰٬۰۰۰ تومان <small>قیمت نمونه بازار</small></div><button class="btn btn-primary btn-full" type="button" data-product="کارتخوان PAX D210" data-price="حدود ۸٬۰۰۰٬۰۰۰ تومان" data-specs="نمایشگر رنگی ۲.۸ اینچ، چاپگر حرارتی، ارتباط GPRS، باتری ۳۰۰۰ میلی‌آمپرساعت؛ قیمت و وضعیت موجودی نیازمند تأیید است.">استعلام و خرید <span data-icon="arrow-left"></span></button></article>
-          <article class="store-card" data-product-category="pos-used"><div class="store-product-icon product-purple"><span data-icon="credit-card"></span></div><span class="store-badge">اقتصادی</span><h3>کارتخوان PAX S90</h3><p>کارتخوان سیار با صفحه‌کلید فیزیکی و چاپگر رسید؛ مناسب پرداخت‌های روزمره کسب‌وکار.</p><div class="store-specs"><span>صفحه‌کلید فیزیکی</span><span>چاپگر رسید</span><span>کارکرده/استوک</span></div><div class="store-price">حدود ۳٬۴۰۰٬۰۰۰ تومان <small>قیمت نمونه بازار</small></div><button class="btn btn-primary btn-full" type="button" data-product="کارتخوان PAX S90" data-price="حدود ۳٬۴۰۰٬۰۰۰ تومان" data-specs="کارتخوان سیار، صفحه‌کلید فیزیکی و چاپگر رسید؛ قیمت و وضعیت دستگاه با توجه به سلامت و گارانتی تغییر می‌کند.">استعلام و خرید <span data-icon="arrow-left"></span></button></article>
-          <article class="store-card" data-product-category="pos-new"><div class="store-product-icon product-green"><span data-icon="smartphone"></span></div><span class="store-badge">اندرویدی</span><h3>کارتخوان Newland N910</h3><p>مدل اندرویدی با نمایشگر لمسی بزرگ و باتری پرظرفیت؛ مناسب نیازهای پیشرفته‌تر.</p><div class="store-specs"><span>نمایشگر لمسی ۵ اینچ</span><span>باتری ۵۲۰۰ mAh</span><span>اندروید</span></div><div class="store-price">حدود ۶٬۹۶۰٬۰۰۰ تومان <small>قیمت نمونه بازار</small></div><button class="btn btn-primary btn-full" type="button" data-product="کارتخوان Newland N910" data-price="حدود ۶٬۹۶۰٬۰۰۰ تومان" data-specs="مدل اندرویدی با نمایشگر لمسی ۵ اینچ و باتری ۵۲۰۰ میلی‌آمپرساعت؛ موجودی، نسخه و شرایط اتصال بانکی باید بررسی شود.">استعلام و خرید <span data-icon="arrow-left"></span></button></article>
-          <article class="store-card" data-product-category="pos-used"><div class="store-product-icon product-orange"><span data-icon="credit-card"></span></div><span class="store-badge">مقرون‌به‌صرفه</span><h3>کارتخوان NEXGO G2</h3><p>گزینه‌ای جمع‌وجور برای پرداخت سیار؛ مشخصات نسخه و وضعیت دستگاه پیش از خرید تأیید شود.</p><div class="store-specs"><span>سیار</span><span>سیم‌کارت‌خور</span><span>مدل اقتصادی</span></div><div class="store-price">حدود ۲٬۶۰۰٬۰۰۰ تومان <small>قیمت نمونه بازار</small></div><button class="btn btn-primary btn-full" type="button" data-product="کارتخوان NEXGO G2" data-price="حدود ۲٬۶۰۰٬۰۰۰ تومان" data-specs="کارتخوان سیار سیم‌کارت‌خور؛ قیمت نمونه بازار است و وضعیت سلامت، گارانتی و سازگاری باید پیش از خرید تأیید شود.">استعلام و خرید <span data-icon="arrow-left"></span></button></article>
-          <article class="store-card" data-product-category="sim"><div class="store-product-icon product-orange"><span data-icon="phone"></span></div><span class="store-badge">خط و شماره</span><h3>سیم‌کارت و خط رند</h3><p>انتخاب بر اساس اپراتور، پیش‌شماره، دائمی یا اعتباری بودن و الگوی شماره.</p><div class="store-specs"><span>همراه اول</span><span>ایرانسل</span><span>شماره رند</span></div><div class="store-price">قیمت وابسته به شماره</div><button class="btn btn-primary btn-full" type="button" data-product="سیم‌کارت و خط رند" data-price="قیمت بر اساس شماره و اپراتور" data-specs="برای استعلام، اپراتور، دائمی یا اعتباری بودن، پیش‌شماره و بودجه تقریبی را اعلام کن.">استعلام و خرید <span data-icon="arrow-left"></span></button></article>
-          <article class="store-card" data-product-category="other"><div class="store-product-icon product-green"><span data-icon="wallet"></span></div><span class="store-badge">کسب‌وکار</span><h3>دستگاه کش‌لس</h3><p>برای بررسی مدل‌های قابل ارائه، قابلیت‌ها، نصب و شرایط فعال‌سازی درخواست بده.</p><div class="store-specs"><span>مدل‌ها متنوع‌اند</span><span>استعلام شرایط</span></div><div class="store-price">قیمت پس از انتخاب مدل</div><button class="btn btn-primary btn-full" type="button" data-product="دستگاه کش‌لس" data-price="قیمت پس از انتخاب مدل" data-specs="نوع دستگاه، امکانات و شرایط ارائه باید بر اساس نیاز کسب‌وکار و مدل موجود تعیین شود.">استعلام و خرید <span data-icon="arrow-left"></span></button></article>
-          <article class="store-card" data-product-category="modem"><div class="store-product-icon product-blue"><span data-icon="wifi"></span></div><span class="store-badge">اینترنت همراه</span><h3>مودم سیم‌کارتی 4G</h3><p>برای خانه، مغازه یا استفاده سیار؛ انتخاب مدل بر اساس پوشش شبکه، اپراتور و تعداد کاربران.</p><div class="store-specs"><span>پشتیبانی 4G/LTE</span><span>مدل رومیزی یا همراه</span><span>قیمت وابسته به مدل</span></div><div class="store-price">قیمت پس از انتخاب مدل</div><button class="btn btn-primary btn-full" type="button" data-product="مودم سیم‌کارتی 4G" data-price="قیمت پس از انتخاب مدل" data-specs="برای استعلام، نوع مودم (همراه یا رومیزی)، اپراتور، بودجه و محدوده استفاده را اعلام کن. مدل و پشتیبانی فرکانس باید پیش از خرید بررسی شود.">استعلام و خرید <span data-icon="arrow-left"></span></button></article>
-        </div>
-        <p class="service-note"><span data-icon="info"></span> قیمت‌های درج‌شده نمونه‌ای از قیمت‌های عمومی بازار هستند و قیمت فروش هورا محسوب نمی‌شوند؛ موجودی، وضعیت نو یا کارکرده و قیمت نهایی را پیش از پرداخت در پیام خصوصی تأیید کن.</p>
-      </div>
-    </section>
-
-    <section id="how" class="section steps-section" data-view="how"><div class="container"><div class="section-heading centered"><div><div class="eyebrow"><span data-icon="route"></span> شروع آسان</div><h2>ثبت درخواست در سه قدم</h2><p>بدون پیچیدگی، نیازت را مشخص کن و متن درخواستت را آماده داشته باش.</p></div></div><div class="steps-grid"><article class="step-card"><div class="step-number">۰۱</div><div class="step-icon"><span data-icon="search"></span></div><h3>خدمتت را پیدا کن</h3><p>از جست‌وجو یا دسته‌بندی‌ها استفاده کن و توضیحات خدمت را بخوان.</p></article><div class="step-connector"><span data-icon="arrow-left"></span></div><article class="step-card"><div class="step-number">۰۲</div><div class="step-icon"><span data-icon="clipboard-list"></span></div><h3>خدمت را انتخاب کن</h3><p>پس از انتخاب خدمت، راه‌های پیام‌دادن مستقیم به هورا نمایش داده می‌شود.</p></article><div class="step-connector"><span data-icon="arrow-left"></span></div><article class="step-card"><div class="step-number">۰۳</div><div class="step-icon"><span data-icon="send"></span></div><h3>ارسال و هماهنگی</h3><p>ایتا، روبیکا یا تلگرام را انتخاب کن و درخواستت را در پیام خصوصی بفرست.</p></article></div></div></section>
-
-    <section id="about" class="section about-section" data-view="about"><div class="container about-panel"><div class="about-art"><div class="about-circle circle-one"></div><div class="about-circle circle-two"></div><div class="about-logo"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 34V14h7v7h18v-7h7v20h-7v-7H15v7z" fill="currentColor"/><circle cx="24" cy="8" r="4" fill="#22d3ee"/></svg></div><span class="about-label">خدمات، یک‌جا</span></div><div class="about-copy"><div class="eyebrow"><span data-icon="heart-handshake"></span> درباره هورا</div><h2>یک همراه برای کارهای مهم شما</h2><p>هورا با هدف دسترس‌پذیرتر کردن خدمات حضوری و آنلاین شکل گرفته است؛ از کمک به انجام امور روزمره تا فراهم کردن ابزارهای کاربردی برای مغازه‌ها و کسب‌وکارها.</p><div class="about-points"><div><span data-icon="check-circle-2"></span> راهنمایی روشن و مرحله‌به‌مرحله</div><div><span data-icon="check-circle-2"></span> توجه به نیازهای افراد و کسب‌وکارها</div><div><span data-icon="check-circle-2"></span> امکان پیگیری حضوری در قدمگاه رضوی</div></div><a href="#services" class="btn btn-primary">پیدا کردن خدمت <span data-icon="arrow-left"></span></a></div></div>
-      <div class="founder-panel"><div class="founder-avatar"><span data-icon="user-round"></span></div><div class="founder-copy"><div class="eyebrow"><span data-icon="sparkles"></span> پشت‌صحنه هورا</div><h3>بنیان‌گذار و مدیر هورا</h3><p>هورا از یک هدف ساده شروع شده است: نزدیک‌تر کردن خدمات کاربردی به مردم، کم‌کردن سردرگمی در مسیر انجام کارها و فراهم‌کردن راهی روشن برای ارتباط با یک فرد پاسخ‌گو. هدف این است که هر خدمت، توضیحی شفاف و مسیر پیگیری مشخص داشته باشد و کسب‌وکارهای کوچک هم به ابزارهای دیجیتال دسترسی آسان‌تری پیدا کنند.</p></div><div class="contact-mini-grid"><div class="contact-mini"><span data-icon="map-pin"></span><div><strong>نشانی دفتر</strong><span>قدمگاه رضوی، پایین‌تر از چهارراه، جنب مخابرات</span></div></div><a class="contact-mini" href="https://eitaa.com/Hora_k82" target="_blank" rel="noopener noreferrer"><span data-icon="messages-square"></span><div><strong>ارتباط مستقیم</strong><span>ایتا، روبیکا و تلگرام: @Hora_k82</span></div></a><div class="contact-mini"><span data-icon="phone"></span><div><strong>تلفن تماس</strong><span>فعلاً از طریق پیام‌رسان‌های هورا در دسترس هستیم.</span></div></div></div></section>
-
-    <section class="final-cta" data-view="home"><div class="container final-cta-inner"><div><div class="eyebrow eyebrow-light"><span data-icon="messages-square"></span> هنوز مطمئن نیستی؟</div><h2>با انتخاب خدمت شروع کن.</h2><p>جزئیات را بخوان؛ اگر مناسب بود، درخواستت را آماده کن.</p></div><a href="#services" class="btn btn-white btn-large">دیدن فهرست خدمات <span data-icon="arrow-left"></span></a></div></section>
-  </main>
-
-  <footer class="site-footer"><div class="container footer-main"><a class="brand footer-brand" href="#home"><span class="brand-mark"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M8 34V14h7v7h18v-7h7v20h-7v-7H15v7z" fill="currentColor"/><circle cx="24" cy="8" r="4" fill="#22d3ee"/></svg></span><span class="brand-copy"><strong>هورا</strong><small>خدمات هوشمند</small></span></a><p>خدمات حضوری و آنلاین، با مسیری ساده‌تر.</p><div class="footer-links"><a href="#services">فهرست خدمات</a><a href="#how">نحوه ثبت درخواست</a><a href="#about">درباره هورا</a></div></div><div class="container footer-bottom"><span>© <span id="current-year"></span> هورا. استفاده از خدمات تابع شرایط هر خدمت است.</span><a href="#home">بازگشت به بالا <span data-icon="arrow-up"></span></a></div></footer>
-
-
-  <section id="purchase-page" class="request-page purchase-page" hidden aria-labelledby="purchase-page-title">
-    <div class="container request-page-container">
-      <button id="purchase-page-back" class="btn btn-outline request-back" type="button"><span data-icon="arrow-left"></span> بازگشت به فروشگاه</button>
-      <div class="request-page-icon purchase-page-icon"><span data-icon="shopping-bag"></span></div>
-      <div class="eyebrow">فروشگاه هورا</div>
-      <h1 id="purchase-page-title">استعلام و خرید</h1>
-      <p id="purchase-page-product" class="request-page-service">محصول موردنظرت را انتخاب کرده‌ای؛ برای موجودی و قیمت نهایی از پیام‌رسان دلخواهت با هورا ارتباط بگیر.</p>
-      <div id="purchase-page-details" class="purchase-details" hidden></div>
-      <div class="messenger-grid">
-        <a class="messenger-card eitaa" href="https://eitaa.com/Hora_k82" target="_blank" rel="noopener noreferrer" aria-label="استعلام خرید در ایتا"><span class="messenger-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="3" y="3" width="42" height="42" rx="13" fill="currentColor"/><path d="m10 23 27-11-8 26-6-9-8-3 15-9-11 12z" fill="#fff"/></svg></span><strong>ایتا</strong><span class="messenger-id">@Hora_k82</span><span class="messenger-action">استعلام قیمت <span data-icon="arrow-left"></span></span></a>
-        <a class="messenger-card rubika" href="https://rubika.ir/Hora_k82" target="_blank" rel="noopener noreferrer" aria-label="استعلام خرید در روبیکا"><span class="messenger-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="3" y="3" width="42" height="42" rx="13" fill="currentColor"/><path d="M12 14h17a7 7 0 0 1 0 14H19l-7 6v-6a7 7 0 0 1 0-14Z" fill="#fff"/><circle cx="19" cy="21" r="1.8" fill="#7c3aed"/><circle cx="24" cy="21" r="1.8" fill="#7c3aed"/><circle cx="29" cy="21" r="1.8" fill="#7c3aed"/></svg></span><strong>روبیکا</strong><span class="messenger-id">@Hora_k82</span><span class="messenger-action">استعلام قیمت <span data-icon="arrow-left"></span></span></a>
-        <a class="messenger-card telegram" href="https://t.me/Hora_k82" target="_blank" rel="noopener noreferrer" aria-label="استعلام خرید در تلگرام"><span class="messenger-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="currentColor"/><path d="M10 22.5 36 12c1.2-.5 2.3.3 1.9 1.9l-4.4 22.4c-.3 1.6-1.3 2-2.6 1.2l-7.4-5.5-3.6 3.5c-.4.4-.8.7-1.6.7l.6-7.6 14.2-12.8c.6-.5-.1-.8-.9-.3L14.7 26.2l-7.2-2.3c-1.6-.5-1.6-1.6 2.5-3.4Z" fill="#fff"/></svg></span><strong>تلگرام</strong><span class="messenger-id">@Hora_k82</span><span class="messenger-action">استعلام قیمت <span data-icon="arrow-left"></span></span></a>
-      </div>
-      <p class="request-page-note"><span data-icon="info"></span> قیمت‌های سایت نمونه بازار هستند؛ پیش از پرداخت، قیمت نهایی، موجودی و شرایط دستگاه را از هورا تأیید بگیر.</p>
-    </div>
-  </section>
-  <nav class="bottom-section-nav" aria-label="دسترسی سریع پایین صفحه"><a href="#services" class="bottom-nav-btn" id="bottom-services"><span data-icon="layers-3"></span> خدمات</a><a href="#store" class="bottom-nav-btn" id="bottom-store"><span data-icon="store"></span> فروشگاه</a></nav>
-
-  <section id="request-page" class="request-page" hidden aria-labelledby="request-page-title">
-    <div class="container request-page-container">
-      <button id="request-page-back" class="btn btn-outline request-back" type="button"><span data-icon="arrow-left"></span> بازگشت به سایت</button>
-      <div class="request-page-icon"><span data-icon="send"></span></div>
-      <div class="eyebrow">ارتباط مستقیم با هورا</div>
-      <h1 id="request-page-title">ارسال درخواست در</h1>
-      <p id="request-page-service" class="request-page-service">خدمت موردنظر را از طریق پیام خصوصی برای ما بفرست.</p>
-      <div class="messenger-grid">
-        <a class="messenger-card eitaa" href="https://eitaa.com/Hora_k82" target="_blank" rel="noopener noreferrer" aria-label="ارسال درخواست در ایتا">
-          <span class="messenger-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="3" y="3" width="42" height="42" rx="13" fill="currentColor"/><path d="m10 23 27-11-8 26-6-9-8-3 15-9-11 12z" fill="#fff"/></svg></span>
-          <strong>ایتا</strong><span class="messenger-id">@Hora_k82</span><span class="messenger-action">ورود به پیام خصوصی <span data-icon="arrow-left"></span></span>
-        </a>
-        <a class="messenger-card rubika" href="https://rubika.ir/Hora_k82" target="_blank" rel="noopener noreferrer" aria-label="ارسال درخواست در روبیکا">
-          <span class="messenger-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="3" y="3" width="42" height="42" rx="13" fill="currentColor"/><path d="M12 14h17a7 7 0 0 1 0 14H19l-7 6v-6a7 7 0 0 1 0-14Z" fill="#fff"/><circle cx="19" cy="21" r="1.8" fill="#7c3aed"/><circle cx="24" cy="21" r="1.8" fill="#7c3aed"/><circle cx="29" cy="21" r="1.8" fill="#7c3aed"/></svg></span>
-          <strong>روبیکا</strong><span class="messenger-id">@Hora_k82</span><span class="messenger-action">ورود به پیام خصوصی <span data-icon="arrow-left"></span></span>
-        </a>
-        <a class="messenger-card telegram" href="https://t.me/Hora_k82" target="_blank" rel="noopener noreferrer" aria-label="ارسال درخواست در تلگرام">
-          <span class="messenger-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22" fill="currentColor"/><path d="M10 22.5 36 12c1.2-.5 2.3.3 1.9 1.9l-4.4 22.4c-.3 1.6-1.3 2-2.6 1.2l-7.4-5.5-3.6 3.5c-.4.4-.8.7-1.6.7l.6-7.6 14.2-12.8c.6-.5-.1-.8-.9-.3L14.7 26.2l-7.2-2.3c-1.6-.5-1.6-1.6 2.5-3.4Z" fill="#fff"/></svg></span>
-          <strong>تلگرام</strong><span class="messenger-id">@Hora_k82</span><span class="messenger-action">ورود به پیام خصوصی <span data-icon="arrow-left"></span></span>
-        </a>
-      </div>
-      <p class="request-page-note"><span data-icon="info"></span> با انتخاب هر پیام‌رسان، وارد صفحه ارتباط با هورا می‌شوی. نام خدمت را در پیام خود بنویس تا سریع‌تر راهنمایی شوی.</p>
-    </div>
-  </section>
-  <div id="app-status" class="app-status" role="status" aria-live="polite">در حال آماده‌سازی هورا…</div>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="./app.js?v=6" defer></script>
-</body>
-                                                                   </html>
-          
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1120"><title>مدیریت هورا</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1120;color:#e5edf8;font-family:Tahoma,Arial,sans-serif}button,input,textarea,select{font:inherit}.wrap{max-width:1100px;margin:auto;padding:20px}.panel{background:#131e31;border:1px solid #2a3950;border-radius:15px;padding:18px;margin:15px 0}h1{font-size:23px}h2{font-size:18px}.small{font-size:12px;color:#aab8cc;line-height:2}label{display:block;font-size:13px;margin:12px 0 6px}input,textarea,select{width:100%;padding:11px;border:1px solid #34445d;border-radius:9px;background:#0b1120;color:#fff}textarea{min-height:75px;resize:vertical}input[type=checkbox]{width:auto}button{padding:11px 14px;border:0;border-radius:9px;background:#168bd0;color:white;cursor:pointer;margin:4px 2px}button.secondary{background:#334155}button.danger{background:#9f3030}button:disabled{opacity:.6}.tabs{display:flex;gap:6px;flex-wrap:wrap}.tab{background:#26354b}.tab.active{background:#087fbd}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}.item{border:1px solid #334155;border-radius:12px;padding:13px;overflow-wrap:anywhere}.item img{max-width:100%;max-height:100px;object-fit:contain}.row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}#message{white-space:pre-wrap;overflow-wrap:anywhere;padding:12px;border-radius:9px;display:none;margin:12px 0}.ok{display:block!important;background:#14532d;color:#dcfce7}.err{display:block!important;background:#7f1d1d;color:#fee2e2}.hidden{display:none!important}@media(max-width:500px){.wrap{padding:12px}.panel{padding:13px}}
+</style></head><body><div class="wrap">
+<h1>پنل مدیریت هورا</h1><p class="small">مدیریت بنرها، خدمات، محصولات و دسته‌بندی‌ها. اطلاعات فعال پس از ذخیره در سایت اصلی خوانده می‌شود.</p><div id="message"></div>
+<section id="login" class="panel"><h2>ورود مدیر</h2><label for="email">ایمیل</label><input id="email" type="email" autocomplete="username"><label for="password">رمز عبور</label><input id="password" type="password" autocomplete="current-password"><button id="loginBtn" type="button">ورود</button></section>
+<section id="app" class="hidden"><div class="panel row"><span id="who" class="small"></span><button id="logout" class="danger" type="button">خروج</button></div>
+<div class="panel"><h2>بخش مدیریت</h2><div class="tabs" id="tabs"><button class="tab active" data-table="services" type="button">خدمات</button><button class="tab" data-table="service_categories" type="button">دسته‌بندی خدمات</button><button class="tab" data-table="products" type="button">محصولات</button><button class="tab" data-table="product_categories" type="button">دسته‌بندی محصولات</button><button class="tab" data-table="banners" type="button">بنرها</button></div><p class="small">برای نمایش در سایت، گزینه «فعال باشد» یا «در سایت نمایش داده شود» را روشن نگه دار. برای تصاویر از لینک مستقیم HTTPS استفاده کن.</p></div>
+<div class="panel"><h2 id="formTitle">افزودن خدمت</h2><form id="editor"><input type="hidden" id="recordId"><div id="fields"></div><button id="saveBtn" type="submit">ذخیره اطلاعات</button><button id="cancelBtn" class="secondary" type="button">پاک کردن فرم</button></form></div>
+<div class="panel"><div class="row"><h2 id="listTitle">فهرست خدمات</h2><button id="reload" class="secondary" type="button">بارگذاری مجدد</button></div><div id="records" class="grid"></div></div></section></div>
+<script>
+'use strict';
+const SUPABASE_URL='https://niilwmvjvttxtngdgepa.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_3Umb3Nca87j52DRQGgql2Q_GzPLRb0f';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const $=id=>document.getElementById(id);let currentTable='services',rows=[];let categories={service_categories:[],product_categories:[]};
+const config={
+ services:{title:'خدمات',fields:[['name','نام خدمت','text',true],['description','توضیحات','textarea',false],['category_id','دسته‌بندی','serviceCategory',false],['icon','نام آیکون انگلیسی','text',false],['sort_order','ترتیب نمایش','number',false],['is_active','فعال باشد','check',false]]},
+ service_categories:{title:'دسته‌بندی خدمات',fields:[['name','نام دسته‌بندی','text',true],['slug','شناسه انگلیسی، مانند admin','text',true],['icon','نام آیکون انگلیسی','text',false],['sort_order','ترتیب نمایش','number',false],['is_active','فعال باشد','check',false]]},
+ products:{title:'محصولات',fields:[['name','نام محصول','text',true],['model','مدل محصول','text',false],['description','توضیحات','textarea',false],['category_id','دسته‌بندی','productCategory',false],['image_url','لینک تصویر HTTPS','url',false],['price_label','قیمت نمایشی، مانند تماس بگیرید','text',false],['price','قیمت عددی، اختیاری','number',false],['specifications','مشخصات، با جداکننده ویرگول','text',false],['is_available','موجود است','check',false],['is_active','در سایت نمایش داده شود','check',false],['sort_order','ترتیب نمایش','number',false]]},
+ product_categories:{title:'دسته‌بندی محصولات',fields:[['name','نام دسته‌بندی','text',true],['slug','شناسه انگلیسی، مانند pos-new','text',true],['sort_order','ترتیب نمایش','number',false],['is_active','فعال باشد','check',false]]},
+ banners:{title:'بنرها',fields:[['title','عنوان بنر','text',true],['description','توضیحات کوتاه','textarea',false],['image_url','لینک تصویر HTTPS','url',false],['button_text','متن دکمه','text',false],['button_url','لینک دکمه','url',false],['sort_order','ترتیب نمایش','number',false],['is_active','در سایت نمایش داده شود','check',false]]}
+};
+function message(text,ok=false){$('message').textContent=text;$('message').className=ok?'ok':'err';}
+function clearMessage(){$('message').style.display='none';$('message').className='';}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+async function requireAdmin(user){const {data,error}=await db.from('admin_users').select('user_id').eq('user_id',user.id).maybeSingle();if(error)throw error;if(!data)throw new Error('این حساب دسترسی مدیر ندارد.');}
+async function startApp(user){await requireAdmin(user);$('login').classList.add('hidden');$('app').classList.remove('hidden');$('who').textContent='مدیر: '+(user.email||'');await loadCategories();renderForm();await loadRecords();}
+async function loadCategories(){for(const table of ['service_categories','product_categories']){const {data,error}=await db.from(table).select('id,name,slug,is_active').order('sort_order',{ascending:true});if(error)throw error;categories[table]=data||[];}}
+function fieldHtml(field,value){const [key,label,type,required]=field,req=required?'required':'';const safe=esc(value??'');if(type==='check')return `<label><input style="width:auto" type="checkbox" id="f_${key}" ${value===undefined||value===null?'checked':value?'checked':''}> ${label}</label>`;if(type==='serviceCategory'||type==='productCategory'){const table=type==='serviceCategory'?'service_categories':'product_categories';const opts=categories[table].map(c=>`<option value="${esc(c.id)}" ${String(value)===String(c.id)?'selected':''}>${esc(c.name)}</option>`).join('');return `<label for="f_${key}">${label}</label><select id="f_${key}"><option value="">بدون دسته‌بندی</option>${opts}</select>`;}if(type==='textarea')return `<label for="f_${key}">${label}</label><textarea id="f_${key}" ${req}>${safe}</textarea>`;return `<label for="f_${key}">${label}</label><input id="f_${key}" type="${type}" value="${safe}" ${req} ${type==='number'?'step="any"':''}>`;}
+function renderForm(record={}){$('fields').innerHTML=config[currentTable].fields.map(f=>fieldHtml(f,record[f[0]])).join('');$('recordId').value=record.id||'';$('formTitle').textContent=(record.id?'ویرایش ':'افزودن ')+config[currentTable].title;}
+function valueFromForm(field){const [key,,type]=field,el=$('f_'+key);if(type==='check')return el.checked;if(type==='number')return el.value===''?null:Number(el.value);if(key==='specifications')return el.value.split(',').map(s=>s.trim()).filter(Boolean);return el.value.trim()||null;}
+async function saveRecord(event){event.preventDefault();clearMessage();const data={};for(const field of config[currentTable].fields)data[field[0]]=valueFromForm(field);if(currentTable==='products'){data.specifications=data.specifications?.length?{items:data.specifications}:{};if(data.price===null)delete data.price;}const id=$('recordId').value;$('saveBtn').disabled=true;try{let result=id?await db.from(currentTable).update(data).eq('id',id):await db.from(currentTable).insert(data);if(result.error)throw result.error;message('اطلاعات با موفقیت ذخیره شد.',true);renderForm();await loadCategories();await loadRecords();}catch(error){message('ذخیره انجام نشد:\n'+error.message);}finally{$('saveBtn').disabled=false;}}
+async function loadRecords(){const {data,error}=await db.from(currentTable).select('*').order('sort_order',{ascending:true});if(error)throw error;rows=data||[];$('listTitle').textContent='فهرست '+config[currentTable].title;$('records').innerHTML=rows.map(r=>{const name=r.name||r.title||'(بدون عنوان)',active=r.is_active!==false;const image=r.image_url?`<img src="${esc(r.image_url)}" alt="" loading="lazy">`:'';return `<article class="item">${image}<strong>${esc(name)}</strong><p class="small">${esc(r.description||r.slug||'')}</p><p class="small">وضعیت: ${active?'فعال':'غیرفعال'}</p><button type="button" data-edit="${esc(r.id)}">ویرایش</button><button type="button" class="secondary" data-toggle="${esc(r.id)}">${active?'غیرفعال کردن':'فعال کردن'}</button><button type="button" class="danger" data-delete="${esc(r.id)}">حذف</button></article>`;}).join('')||'<p class="small">هنوز موردی ثبت نشده است.</p>';}
+$('loginBtn').addEventListener('click',async()=>{clearMessage();try{const {data,error}=await db.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error)throw error;await startApp(data.user);}catch(error){message('ورود ناموفق بود:\n'+error.message);}});
+$('logout').addEventListener('click',async()=>{await db.auth.signOut();$('app').classList.add('hidden');$('login').classList.remove('hidden');});
+$('tabs').addEventListener('click',async e=>{const btn=e.target.closest('[data-table]');if(!btn)return;currentTable=btn.dataset.table;document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b===btn));try{await loadCategories();renderForm();await loadRecords();clearMessage();}catch(error){message('بارگذاری انجام نشد:\n'+error.message);}});
+$('editor').addEventListener('submit',saveRecord);$('cancelBtn').addEventListener('click',()=>renderForm());$('reload').addEventListener('click',async()=>{try{await loadCategories();await loadRecords();message('فهرست به‌روز شد.',true);}catch(error){message(error.message);}});
+$('records').addEventListener('click',async e=>{const edit=e.target.closest('[data-edit]'),toggle=e.target.closest('[data-toggle]'),del=e.target.closest('[data-delete]');try{if(edit){const r=rows.find(x=>String(x.id)===edit.dataset.edit);if(r)renderForm(r);}if(toggle){const r=rows.find(x=>String(x.id)===toggle.dataset.toggle);if(!r)return;const {error}=await db.from(currentTable).update({is_active:r.is_active===false}).eq('id',r.id);if(error)throw error;await loadRecords();message('وضعیت به‌روز شد.',true);}if(del){if(!confirm('این مورد برای همیشه حذف شود؟'))return;const {error}=await db.from(currentTable).delete().eq('id',del.dataset.delete);if(error)throw error;renderForm();await loadCategories();await loadRecords();message('مورد حذف شد.',true);}}catch(error){message('عملیات انجام نشد:\n'+error.message);}});
+(async()=>{try{const {data,error}=await db.auth.getSession();if(error)throw error;if(data.session?.user)await startApp(data.session.user);else renderForm();}catch(error){message('خطا در آماده‌سازی پنل:\n'+error.message);}})();
+</script></body></html>
