@@ -153,6 +153,10 @@
   const HURA_SUPABASE_KEY = 'sb_publishable_3Umb3Nca87j52DRQGgql2Q_GzPLRb0f';
   let huraDb = null;
   let remoteStoreProducts = false;
+  const HURA_SUPABASE_URL = 'https://niilwmvjvttxtngdgepa.supabase.co';
+  const HURA_SUPABASE_KEY = 'sb_publishable_3Umb3Nca87j52DRQGgql2Q_GzPLRb0f';
+  let huraDb = null;
+  let remoteStoreProducts = false;
   const palette = [
     {color:'#2563eb',bg:'#dbeafe'}, {color:'#0e7490',bg:'#cffafe'},
     {color:'#7c3aed',bg:'#ede9fe'}, {color:'#047857',bg:'#d1fae5'},
@@ -204,7 +208,7 @@
         id:String(r.id),title:r.name||r.title||'خدمت بدون نام',category:slug,categoryName:cat?.name||'خدمات هورا',
         icon:r.icon||'sparkles',tag:r.tag||'خدمت هورا',color:r.color||p.color,bg:r.bg||p.bg,
         description:r.description||'برای دریافت جزئیات این خدمت با هورا ارتباط بگیر.',
-        docs:Array.isArray(r.docs)?r.docs:['مدارک و اطلاعات موردنیاز را هنگام ثبت درخواست از هورا بپرسید.'],
+        docs:Array.isArray(r.docs)&&r.docs.length?r.docs:['مدارک و اطلاعات موردنیاز را هنگام ثبت درخواست از هورا بپرسید.'],
         note:r.note||'مدارک نهایی به نوع درخواست و شرایط مرجع مربوط بستگی دارد.'
       };
     });
@@ -263,15 +267,32 @@
     renderIcons(slidesHost);
     return true;
   }
+  function applySiteContent(rows){
+    if(!Array.isArray(rows))return;
+    rows.forEach(row=>{
+      const key=String(row.content_key||'');
+      if(row.content_value===null || row.content_value===undefined)return;
+      if(key.startsWith('href_')){
+        const link=document.getElementById(key.slice(5));
+        if(link)link.setAttribute('href',String(row.content_value));
+        return;
+      }
+      if(!key.startsWith('cms_'))return;
+      const target=document.getElementById(key);
+      if(target)target.textContent=String(row.content_value);
+    });
+  }
   async function loadHuraContent(){
     if(!window.supabase?.createClient){setStatus('سایت آماده است؛ کتابخانه اتصال بارگذاری نشد.','error');return;}
     huraDb=window.supabase.createClient(HURA_SUPABASE_URL,HURA_SUPABASE_KEY);
     const results=await Promise.allSettled([
-      getRows('service_categories'),getRows('services'),getRows('product_categories'),getRows('products'),getRows('banners')
+      getRows('service_categories'),getRows('services'),getRows('product_categories'),getRows('products'),getRows('banners'),
+      huraDb.from('site_content').select('content_key,content_value')
     ]);
     const failed=results.filter(r=>r.status==='rejected');
-    const val=i=>results[i].status==='fulfilled'?results[i].value:[];
-    const serviceCats=val(0),serviceRows=val(1),productCats=val(2),productRows=val(3),bannerRows=val(4);
+    const val=i=>results[i].status==='fulfilled'?(results[i].value?.data ?? results[i].value):[];
+    const serviceCats=val(0),serviceRows=val(1),productCats=val(2),productRows=val(3),bannerRows=val(4),siteContent=val(5);
+    applySiteContent(siteContent);
     const changed=[];
     if(renderRemoteServices(serviceRows,serviceCats))changed.push('خدمات');
     if(renderRemoteProducts(productRows,productCats))changed.push('محصولات');
@@ -282,8 +303,7 @@
     } else {
       setStatus(changed.length?'اطلاعات '+changed.join('، ')+' از پنل مدیریت بارگذاری شد.':'اتصال برقرار است؛ برای نمایش اطلاعات جدید، موارد را در پنل مدیریت فعال کنید.','success');
     }
-  }
-
+    }
   function init(){
     renderIcons(); initTheme(); initPromoSlider(); initSectionNavigation(); $('#current-year').textContent=new Date().getFullYear().toLocaleString('fa-IR'); updateServices();
     $('#theme-toggle').addEventListener('click',toggleTheme);
