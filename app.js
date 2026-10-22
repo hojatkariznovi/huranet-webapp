@@ -153,10 +153,6 @@
   const HURA_SUPABASE_KEY = 'sb_publishable_3Umb3Nca87j52DRQGgql2Q_GzPLRb0f';
   let huraDb = null;
   let remoteStoreProducts = false;
-  const HURA_SUPABASE_URL = 'https://niilwmvjvttxtngdgepa.supabase.co';
-  const HURA_SUPABASE_KEY = 'sb_publishable_3Umb3Nca87j52DRQGgql2Q_GzPLRb0f';
-  let huraDb = null;
-  let remoteStoreProducts = false;
   const palette = [
     {color:'#2563eb',bg:'#dbeafe'}, {color:'#0e7490',bg:'#cffafe'},
     {color:'#7c3aed',bg:'#ede9fe'}, {color:'#047857',bg:'#d1fae5'},
@@ -303,7 +299,8 @@
     } else {
       setStatus(changed.length?'اطلاعات '+changed.join('، ')+' از پنل مدیریت بارگذاری شد.':'اتصال برقرار است؛ برای نمایش اطلاعات جدید، موارد را در پنل مدیریت فعال کنید.','success');
     }
-    }
+  }
+
   function init(){
     renderIcons(); initTheme(); initPromoSlider(); initSectionNavigation(); $('#current-year').textContent=new Date().getFullYear().toLocaleString('fa-IR'); updateServices();
     $('#theme-toggle').addEventListener('click',toggleTheme);
